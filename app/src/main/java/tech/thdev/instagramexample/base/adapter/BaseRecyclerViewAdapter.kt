@@ -7,7 +7,8 @@ import tech.thdev.instagramexample.base.adapter.holder.BaseViewHolder
 import tech.thdev.instagramexample.base.adapter.viewmodel.BaseAdapterViewModel
 
 abstract class BaseRecyclerViewAdapter<VIEW_MODEL : BaseAdapterViewModel>(
-    createViewModel: (adapterRepository: AdapterRepository) -> VIEW_MODEL) :
+    createViewModel: (adapterRepository: AdapterRepository) -> VIEW_MODEL
+) :
     RecyclerView.Adapter<BaseViewHolder<Any, VIEW_MODEL>>() {
 
     // Adapter data.
