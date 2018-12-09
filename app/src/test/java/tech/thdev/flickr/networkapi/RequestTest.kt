@@ -8,6 +8,7 @@ import org.junit.Test
 import tech.thdev.flickr.data.FlickrPhotoResponse
 import tech.thdev.support.network.HTTP_GET
 import tech.thdev.support.network.addon.parse
+import tech.thdev.support.network.api.convertParse
 import tech.thdev.support.network.api.enqueue
 import tech.thdev.support.network.api.request
 import tech.thdev.support.network.util.readStream
@@ -17,7 +18,7 @@ import javax.net.ssl.HttpsURLConnection
 
 class RequestTest {
 
-    private val testUrl = "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=34361b81e70e441b73c62c076aaeac27&format=json&nojsoncallback=1&api_sig=f7a06fcc1d7217501efdb1e5fbdebfb8"
+    private val testUrl = "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=34361b81e70e441b73c62c076aaeac27&format=json&nojsoncallback=1"
 
     /**
      * connect 직접 구현하고, read에 대한 검증
@@ -86,5 +87,23 @@ class RequestTest {
     fun testUrlNotFound() = runBlocking {
         val ret = "https://api.flickr.com/services/a".request().join()
         println(ret.get().message)
+    }
+
+    @Test
+    fun testConvertParse() = runBlocking {
+        val ret = "$testUrl&page=1".request().join()
+        ret.enqueue(onError = {
+            assert(it.requestCode != HttpsURLConnection.HTTP_OK)
+            println("fail")
+        }) {
+            assert(ret.get().requestCode == HttpsURLConnection.HTTP_OK)
+            println("success")
+
+            println("jsonQuery ${ret.get().message}")
+
+            val item = it.convertParse(FlickrPhotoResponse::class.java)
+            println("item $item")
+            assert(item?.photos?.photo?.isNotEmpty() == true)
+        }
     }
 }

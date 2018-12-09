@@ -1,3 +1,10 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="main_image_title_size">12sp</dimen>
+    <dimen name="main_image_side_margin">8dp</dimen>
+    <dimen name="main_image_facing_margin">4dp</dimen>
+    <dimen name="main_image_elevation">2dp</dimen>
+    <dimen name="main_image_title_padding">10dp</dimen>
+    <dimen name="main_image_radius">4dp</dimen>
 </resources>

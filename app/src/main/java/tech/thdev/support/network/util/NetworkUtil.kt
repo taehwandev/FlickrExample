@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package tech.thdev.support.network.util
 
 import tech.thdev.support.network.UTF_8
@@ -9,7 +11,7 @@ import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
 
-fun <T> URL.use(body: HttpsURLConnection.() -> T?): T? {
+inline fun <T> URL.use(body: HttpsURLConnection.() -> T?): T? {
     var urlConnection: HttpsURLConnection? = null
     try {
         urlConnection = (this.openConnection() as? HttpsURLConnection)
@@ -33,7 +35,7 @@ fun <T> URL.use(body: HttpsURLConnection.() -> T?): T? {
  * @receiver InputStream
  * @return String 읽은 데이터를 return
  */
-fun InputStream.readStream(dec: String = UTF_8): String? {
+inline fun InputStream.readStream(dec: String = UTF_8): String? {
     val stringBuilder = StringBuilder()
 
     // Read inputStream using default UTF-8

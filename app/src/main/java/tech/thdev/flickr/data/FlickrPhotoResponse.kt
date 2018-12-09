@@ -6,5 +6,5 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class FlickrPhotoResponse(
-        @SerializedName("photos") val photos: Photos,
+        @SerializedName("photos") val photos: FlickrPhotos,
         @SerializedName("stat") val status: String) : Parcelable

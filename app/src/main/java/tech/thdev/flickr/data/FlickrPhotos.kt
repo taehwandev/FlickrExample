@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Photos(
-        @SerializedName("page") val page: Int,
-        @SerializedName("pages") val pages: Int,
-        @SerializedName("perpage") val perpage: Int,
-        @SerializedName("photo") val photo: List<Photo>,
-        @SerializedName("total") val total: Int) : Parcelable
+data class FlickrPhotos(
+        @SerializedName("page") val page: Int = 0,
+        @SerializedName("pages") val pages: Int = 0,
+        @SerializedName("perpage") val perpage: Int = 0,
+        @SerializedName("photo") val photo: List<FlickrPhoto> = mutableListOf(),
+        @SerializedName("total") val total: Int = 0) : Parcelable

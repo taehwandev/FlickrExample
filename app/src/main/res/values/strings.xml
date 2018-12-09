@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">InstagramExample</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_open_source">Open source info</string>
 </resources>

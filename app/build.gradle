@@ -6,11 +6,11 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "tech.thdev.instagramexample"
+        applicationId "tech.thdev.flickr.example"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -18,10 +18,12 @@ android {
             minifyEnabled false
             applicationIdSuffix ".debug"
             debuggable true
+            buildConfigField "String", "FLICKR_API_KEY", rootProject.ext.flickrApiKey
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "FLICKR_API_KEY", rootProject.ext.flickrApiKey
         }
     }
 
@@ -46,6 +48,8 @@ dependencies {
 
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
+
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     implementation 'com.google.code.gson:gson:2.8.5'
 

@@ -1,14 +1,18 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package tech.thdev.support.network.api
 
 import tech.thdev.coroutines.provider.DispatchersProvider
+import tech.thdev.flickr.util.notNullMessage
 import tech.thdev.support.data.Response
 import tech.thdev.support.network.DEFAULT_CONNECT_TIMEOUT
 import tech.thdev.support.network.DEFAULT_READ_TIMEOUT
 import tech.thdev.support.network.HTTP_GET
 import tech.thdev.support.network.UTF_8
+import tech.thdev.support.network.addon.parse
 import javax.net.ssl.HttpsURLConnection
 
-fun String.request(
+inline fun String.request(
         readTimeout: Int = DEFAULT_READ_TIMEOUT,
         connectTimeout: Int = DEFAULT_CONNECT_TIMEOUT,
         requestMethod: String = HTTP_GET,
@@ -26,3 +30,12 @@ suspend fun NetworkAPI.enqueue(onError: suspend (response: Response) -> Unit,
         onSuccess(get())
     }
 }
+
+inline fun <T> Response.convertParse(clazz: Class<T>): T? =
+        try {
+            this.message.notNullMessage {
+                clazz.parse(it)
+            }
+        } catch (e: Exception) {
+            null
+        }

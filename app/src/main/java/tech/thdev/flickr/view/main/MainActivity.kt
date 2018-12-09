@@ -1,24 +1,25 @@
-package tech.thdev.flickr
+package tech.thdev.flickr.view.main
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-
 import kotlinx.android.synthetic.main.activity_main.*
+import tech.thdev.flickr.R
+import tech.thdev.flickr.util.loadFragment
 
 class MainActivity : AppCompatActivity() {
+
+    private val mainFragment: MainFragment by lazy(LazyThreadSafetyMode.NONE) {
+        MainFragment()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+        loadFragment(R.id.container, mainFragment)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_open_source -> true
             else -> super.onOptionsItemSelected(item)
         }
     }

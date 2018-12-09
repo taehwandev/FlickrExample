@@ -2,7 +2,6 @@ package tech.thdev.support.base.adapter.viewmodel
 
 import org.junit.Before
 import org.junit.Test
-import tech.thdev.support.base.adapter.data.source.AdapterRepository
 import tech.thdev.support.base.adapter.util.cast
 
 class BaseAdapterViewModelTest {
@@ -11,7 +10,7 @@ class BaseAdapterViewModelTest {
 
     @Before
     fun setUp() {
-        adapterViewModel = object : BaseAdapterViewModel(AdapterRepository()) {
+        adapterViewModel = object : BaseAdapterViewModel() {
             // Do nothing
             init {
                 adapterRepository.addItem(0, true)
