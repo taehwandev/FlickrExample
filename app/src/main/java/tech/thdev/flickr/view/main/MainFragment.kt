@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_main.*
 import tech.thdev.flickr.R
 import tech.thdev.flickr.data.source.all.AllImageRepository
+import tech.thdev.flickr.network.FlickrApi
 import tech.thdev.flickr.view.main.adapter.MainAdapter
 import tech.thdev.flickr.view.main.adapter.decoration.MarginItemDecoration
 import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel
@@ -23,7 +24,7 @@ class MainFragment : CoroutineScopeFragment() {
     }
 
     private val viewModel: LoadDataViewModel by lazyInjectViewModel {
-        LoadDataViewModel(AllImageRepository, adapter.viewModel)
+        LoadDataViewModel(AllImageRepository.getInstance(FlickrApi), adapter.viewModel)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =

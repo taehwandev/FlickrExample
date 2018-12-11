@@ -1,9 +1,13 @@
-package tech.thdev.flickr.networkapi
+package tech.thdev.support.network.util
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import tech.thdev.contract.TEST_FAIL_URL
+import tech.thdev.contract.TEST_URL
 import tech.thdev.support.network.HTTP_GET
-import tech.thdev.support.network.util.use
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
@@ -13,15 +17,13 @@ import javax.net.ssl.HttpsURLConnection
  */
 class NetworkUtilKtTest {
 
-    private val testUrl = "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=34361b81e70e441b73c62c076aaeac27&format=json&nojsoncallback=1&api_sig=f7a06fcc1d7217501efdb1e5fbdebfb8"
-
     /**
      * http_ok 테스트
      */
     @Test
-    fun testHttpOk() = runBlocking{
+    fun testHttpOk() = runBlocking {
         val connect = CoroutineScope(Dispatchers.IO).async {
-            URL(testUrl).use {
+            URL(TEST_URL).use {
                 println(this.url.toString())
                 // Default test
                 readTimeout = 3000
@@ -49,9 +51,9 @@ class NetworkUtilKtTest {
      * http 404 test
      */
     @Test
-    fun testHttpNotFound() = runBlocking{
+    fun testHttpNotFound() = runBlocking {
         val connect = CoroutineScope(Dispatchers.IO).async {
-            URL("https://api.flickr.com/services/a").use {
+            URL(TEST_FAIL_URL).use {
                 println(this.url.toString())
                 // Default test
                 readTimeout = 3000

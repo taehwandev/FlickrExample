@@ -5,10 +5,7 @@ package tech.thdev.support.network.api
 import tech.thdev.coroutines.provider.DispatchersProvider
 import tech.thdev.flickr.util.notNullMessage
 import tech.thdev.support.data.Response
-import tech.thdev.support.network.DEFAULT_CONNECT_TIMEOUT
-import tech.thdev.support.network.DEFAULT_READ_TIMEOUT
-import tech.thdev.support.network.HTTP_GET
-import tech.thdev.support.network.UTF_8
+import tech.thdev.support.network.*
 import tech.thdev.support.network.addon.parse
 import javax.net.ssl.HttpsURLConnection
 
@@ -22,12 +19,11 @@ inline fun String.request(
         NetworkAPI(readTimeout, connectTimeout, requestMethod, dec, dispatcher)
                 .load(this)
 
-suspend fun NetworkAPI.enqueue(onError: suspend (response: Response) -> Unit,
-                               onSuccess: suspend (response: Response) -> Unit) {
+suspend fun NetworkAPI.enqueue(onResponse: suspend (result: ResponseStatus, response: Response) -> Unit) {
     if (get().requestCode != HttpsURLConnection.HTTP_OK) {
-        onError(get())
+        onResponse(ResponseStatus.Fail, get())
     } else {
-        onSuccess(get())
+        onResponse(ResponseStatus.Success, get())
     }
 }
 

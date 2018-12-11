@@ -1,12 +1,13 @@
-package tech.thdev.flickr.networkapi
+package tech.thdev.support.network
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import tech.thdev.contract.TEST_FAIL_URL
+import tech.thdev.contract.TEST_URL
 import tech.thdev.flickr.data.FlickrPhotoResponse
-import tech.thdev.support.network.HTTP_GET
 import tech.thdev.support.network.addon.parse
 import tech.thdev.support.network.api.convertParse
 import tech.thdev.support.network.api.enqueue
@@ -18,7 +19,6 @@ import javax.net.ssl.HttpsURLConnection
 
 class RequestTest {
 
-    private val testUrl = "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=34361b81e70e441b73c62c076aaeac27&format=json&nojsoncallback=1"
 
     /**
      * connect 직접 구현하고, read에 대한 검증
@@ -26,7 +26,7 @@ class RequestTest {
     @Test
     fun testReadStream() = runBlocking {
         val connect = CoroutineScope(Dispatchers.IO).async {
-            URL(testUrl).use {
+            URL(TEST_URL).use {
                 println(this.url.toString())
                 // Default test
                 readTimeout = 3000
@@ -55,7 +55,7 @@ class RequestTest {
      */
     @Test
     fun testRequestAndReadStream() = runBlocking {
-        val ret = testUrl.request().join()
+        val ret = TEST_URL.request().join()
         println(ret.get())
         assert(ret.get().requestCode == HttpsURLConnection.HTTP_OK)
     }
@@ -65,45 +65,54 @@ class RequestTest {
      */
     @Test
     fun testJsonToData() = runBlocking {
-        val ret = testUrl.request().join()
+        val ret = TEST_URL.request().join()
         println(ret.get().message)
 
+        ret.enqueue { result, response ->
+            when (result) {
+                ResponseStatus.Success -> {
+                    assert(response.requestCode == HttpsURLConnection.HTTP_OK)
+                    println("success")
 
-        ret.enqueue(onError = {
-            assert(it.requestCode != HttpsURLConnection.HTTP_OK)
-            println("fail")
-        }) {
-            assert(ret.get().requestCode == HttpsURLConnection.HTTP_OK)
-            println("success")
-
-            val item = ret.get().message?.let {
-                FlickrPhotoResponse::class.java.parse(it)
+                    val item = response.message?.let {
+                        FlickrPhotoResponse::class.java.parse(it)
+                    }
+                    assert(item?.photos?.photo?.isNotEmpty() == true)
+                }
+                ResponseStatus.Fail -> {
+                    assert(response.requestCode != HttpsURLConnection.HTTP_OK)
+                    println("fail")
+                }
             }
-            assert(item?.photos?.photo?.isNotEmpty() == true)
         }
     }
 
     @Test
     fun testUrlNotFound() = runBlocking {
-        val ret = "https://api.flickr.com/services/a".request().join()
+        val ret = TEST_FAIL_URL.request().join()
         println(ret.get().message)
     }
 
     @Test
     fun testConvertParse() = runBlocking {
-        val ret = "$testUrl&page=1".request().join()
-        ret.enqueue(onError = {
-            assert(it.requestCode != HttpsURLConnection.HTTP_OK)
-            println("fail")
-        }) {
-            assert(ret.get().requestCode == HttpsURLConnection.HTTP_OK)
-            println("success")
+        val ret = "$TEST_URL&page=1".request().join()
+        ret.enqueue { result, response ->
+            when (result) {
+                ResponseStatus.Success -> {
+                    assert(response.requestCode != HttpsURLConnection.HTTP_OK)
+                    println("fail")
+                }
+                ResponseStatus.Fail -> {
+                    assert(response.requestCode == HttpsURLConnection.HTTP_OK)
+                    println("success")
 
-            println("jsonQuery ${ret.get().message}")
+                    println("jsonQuery ${ret.get().message}")
 
-            val item = it.convertParse(FlickrPhotoResponse::class.java)
-            println("item $item")
-            assert(item?.photos?.photo?.isNotEmpty() == true)
+                    val item = response.convertParse(FlickrPhotoResponse::class.java)
+                    println("item $item")
+                    assert(item?.photos?.photo?.isNotEmpty() == true)
+                }
+            }
         }
     }
 }
