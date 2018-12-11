@@ -14,6 +14,9 @@ buildscript {
 
         glideVersion = '4.8.0'
         lottieVersion = '2.7.0'
+
+        retrofitVersion='2.5.0'
+        okhttpVersion = '3.12.0'
     }
 
     repositories {

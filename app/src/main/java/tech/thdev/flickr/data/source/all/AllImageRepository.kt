@@ -42,6 +42,10 @@ class AllImageRepository private constructor(private val flickrApi: FlickrApi) {
             // 더 이상 부를게 없을 경우
             return
         }
+
+        flickrApi.loadFlickrDefault(nowPage, PER_PAGE).await()
+
+
         flickrApi.loadFlickrDefault(nowPage, PER_PAGE).request().join().also { network ->
             network.enqueue { result, response ->
                 when (result) {
