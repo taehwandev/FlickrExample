@@ -7,7 +7,9 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class DefaultPhotoResponse(
         @SerializedName("photos") val photos: DefaultPhotos,
-        @SerializedName("stat") val status: String) : Parcelable
+        @SerializedName("stat") val status: String,
+        @SerializedName("code") val code: Int,
+        @SerializedName("message") val message: String) : Parcelable
 
 @Parcelize
 data class DefaultPhotos(

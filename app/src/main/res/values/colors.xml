@@ -10,4 +10,5 @@
     <color name="bottomDetailInfoBG">#96000000</color>
 
     <color name="colorDetailDescription">#eaeaea</color>
+    <color name="colorErrorToastBackgroundColor">#dd000000</color>
 </resources>

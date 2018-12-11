@@ -15,4 +15,10 @@
     <dimen name="detail_bottom_padding">20dp</dimen>
     <dimen name="detail_count_text_size">12sp</dimen>
     <dimen name="detail_user_info_text_size">13sp</dimen>
+
+    <dimen name="error_message_text_size">15sp</dimen>
+    <dimen name="bg_error_toast_height">50dp</dimen>
+    <dimen name="bg_error_toast_padding">15dp</dimen>
+    <dimen name="bg_error_text_size">12sp</dimen>
+    <dimen name="bg_error_round">6dp</dimen>
 </resources>

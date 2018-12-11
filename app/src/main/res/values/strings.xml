@@ -5,4 +5,6 @@
     <string name="msg_owner_name">By: %s</string>
     <string name="msg_post">On: %s</string>
     <string name="time_format_detail">MMM dd, YYYY</string>
+    <string name="label_retry">Retry</string>
+    <string name="message_no_result">Flickr error</string>
 </resources>

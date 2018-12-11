@@ -11,14 +11,19 @@ class LoadDataViewModel(private val allImageRepository: AllImageRepository,
                         private val mainAdapterViewModel: MainAdapterViewModel,
                         private val defaultDispatcher: DispatchersProvider = DispatchersProvider) : CoroutineScopeViewModel() {
 
+    lateinit var showErrorMessage: (message: String) -> Unit
+    lateinit var loadSuccess: () -> Unit
+
     private var isLoading = false
 
     fun loadData() {
         isLoading = true
         launch {
             allImageRepository.loadImage(onError = {
-                // error 처리
-                isLoading = false
+                launch(defaultDispatcher.main) {
+                    showErrorMessage("${it.requestCode}-${it.message}")
+                    isLoading = false
+                }
 
             }) { item ->
                 d { item.toString() }
@@ -33,6 +38,7 @@ class LoadDataViewModel(private val allImageRepository: AllImageRepository,
                         }
                     }
                     mainAdapterViewModel.notifyDataSetChanged()
+                    loadSuccess()
                     isLoading = false
                 }
             }

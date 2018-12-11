@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.include_toast_error.view.*
 import tech.thdev.flickr.R
 import tech.thdev.flickr.contract.KEY_PHOTO_ID
 import tech.thdev.flickr.data.source.all.AllImageRepository
 import tech.thdev.flickr.network.FlickrApi
 import tech.thdev.flickr.util.adapterScrollGridLayoutManagerListener
+import tech.thdev.flickr.util.createErrorToast
 import tech.thdev.flickr.util.launchActivity
 import tech.thdev.flickr.view.detail.DetailActivity
 import tech.thdev.flickr.view.main.adapter.MainAdapter
@@ -18,18 +20,35 @@ import tech.thdev.flickr.view.main.adapter.decoration.MarginItemDecoration
 import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel
 import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel.Companion.VIEW_TYPE_TOP
 import tech.thdev.flickr.view.main.viewmodel.LoadDataViewModel
-import tech.thdev.lifecycle.extensions.viewmodel.injectViewModel
 import tech.thdev.lifecycle.extensions.viewmodel.lazyInjectViewModel
 import tech.thdev.support.base.coroutines.ui.CoroutineScopeFragment
 
 class MainFragment : CoroutineScopeFragment() {
 
+    private val adapterViewModel: MainAdapterViewModel by lazyInjectViewModel {
+        MainAdapterViewModel().apply {
+            goToDetailPage = { photoId ->
+                requireContext().launchActivity<DetailActivity> {
+                    putExtra(KEY_PHOTO_ID, photoId)
+                }
+            }
+        }
+    }
+
     private val adapter: MainAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        MainAdapter(injectViewModel { MainAdapterViewModel() })
+        MainAdapter(adapterViewModel)
     }
 
     private val viewModel: LoadDataViewModel by lazyInjectViewModel {
-        LoadDataViewModel(AllImageRepository.getInstance(FlickrApi), adapter.viewModel)
+        LoadDataViewModel(AllImageRepository.getInstance(FlickrApi), adapter.viewModel).apply {
+            showErrorMessage = this@MainFragment::showErrorView
+
+            loadSuccess = {
+                if (group_progress.visibility == View.VISIBLE) {
+                    group_progress.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private val layoutManager: GridLayoutManager by lazy(LazyThreadSafetyMode.NONE) {
@@ -42,6 +61,15 @@ class MainFragment : CoroutineScopeFragment() {
                         }
             }
         }
+    }
+
+    private fun showErrorToast(message: String) {
+        requireContext().createErrorToast {
+            LayoutInflater.from(requireContext())
+                    .inflate(R.layout.include_toast_error, null).apply {
+                        tv_error_toast.text = message
+                    }
+        }.show()
     }
 
     private val adapterScrollListener by lazy(LazyThreadSafetyMode.NONE) {
@@ -61,21 +89,24 @@ class MainFragment : CoroutineScopeFragment() {
             adapter = this@MainFragment.adapter
         }
 
-        adapter.viewModel.init()
-
         viewModel.loadData()
-    }
-
-    private fun MainAdapterViewModel.init() {
-        goToDetailPage = { photoId ->
-            requireContext().launchActivity<DetailActivity> {
-                putExtra(KEY_PHOTO_ID, photoId)
-            }
-        }
     }
 
     override fun onDestroy() {
         recycler_view?.removeOnScrollListener(adapterScrollListener)
         super.onDestroy()
+    }
+
+    private fun showErrorView(message: String) {
+        showErrorToast(message)
+        group_progress.visibility = View.GONE
+
+        if (adapter.itemCount == 0) {
+            recycler_view.visibility = View.GONE
+            tv_user_message.run {
+                visibility = View.VISIBLE
+                text = message
+            }
+        }
     }
 }

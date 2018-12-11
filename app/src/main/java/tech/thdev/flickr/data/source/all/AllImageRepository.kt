@@ -49,12 +49,16 @@ class AllImageRepository private constructor(private val flickrApi: FlickrApi) {
                         // 중간에서 페이지 정보를 확인하고, convert 한다.
                         d { response.message ?: "" }
                         response.convertParse(DefaultPhotoResponse::class.java)?.let {
-                            it.photos.run {
-                                ++this@AllImageRepository.nowPage
-                                this@AllImageRepository.pages = pages
-                            }
+                            if (it.status == "ok") {
+                                it.photos.run {
+                                    ++this@AllImageRepository.nowPage
+                                    this@AllImageRepository.pages = pages
+                                }
 
-                            onSuccess(it)
+                                onSuccess(it)
+                            } else {
+                                onError(Response(it.message, requestCode = it.code))
+                            }
                         } ?: onError(response)
                     }
                     ResponseStatus.Fail -> {
