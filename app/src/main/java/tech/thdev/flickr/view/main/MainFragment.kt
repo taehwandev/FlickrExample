@@ -13,6 +13,7 @@ import tech.thdev.flickr.data.source.all.AllImageRepository
 import tech.thdev.flickr.network.FlickrApi
 import tech.thdev.flickr.util.adapterScrollGridLayoutManagerListener
 import tech.thdev.flickr.util.createErrorToast
+import tech.thdev.flickr.util.isOnline
 import tech.thdev.flickr.util.launchActivity
 import tech.thdev.flickr.view.detail.DetailActivity
 import tech.thdev.flickr.view.main.adapter.MainAdapter
@@ -63,11 +64,11 @@ class MainFragment : CoroutineScopeFragment() {
         }
     }
 
-    private fun showErrorToast(message: String) {
+    private fun String.showErrorToast() {
         requireContext().createErrorToast {
             LayoutInflater.from(requireContext())
                     .inflate(R.layout.include_toast_error, null).apply {
-                        tv_error_toast.text = message
+                        tv_error_toast.text = this@showErrorToast
                     }
         }.show()
     }
@@ -89,7 +90,11 @@ class MainFragment : CoroutineScopeFragment() {
             adapter = this@MainFragment.adapter
         }
 
-        viewModel.loadData()
+        if (requireContext().isOnline()) {
+            viewModel.loadData()
+        } else {
+            showErrorView(getString(R.string.msg_network_error))
+        }
     }
 
     override fun onDestroy() {
@@ -98,7 +103,7 @@ class MainFragment : CoroutineScopeFragment() {
     }
 
     private fun showErrorView(message: String) {
-        showErrorToast(message)
+        message.showErrorToast()
         group_progress.visibility = View.GONE
 
         if (adapter.itemCount == 0) {

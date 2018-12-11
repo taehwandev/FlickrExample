@@ -7,7 +7,7 @@
     android:gravity="center"
     android:minHeight="@dimen/bg_error_toast_height"
     android:padding="@dimen/bg_error_toast_padding"
-    android:text="@string/message_no_result"
+    android:text="@string/msg_no_result"
     android:textColor="@color/white"
     android:textSize="@dimen/bg_error_text_size"
     android:textStyle="bold" />

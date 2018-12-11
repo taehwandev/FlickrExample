@@ -4,6 +4,7 @@ package tech.thdev.flickr.util
 
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -24,3 +25,8 @@ inline fun Context.show(message: String) =
 
 inline fun Context.show(messageId: Int) =
         show(getText(messageId).toString())
+
+inline fun Context.isOnline(): Boolean =
+        (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).run {
+            activeNetworkInfo?.isConnected ?: false
+        }
