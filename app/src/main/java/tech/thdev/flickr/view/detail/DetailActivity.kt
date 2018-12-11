@@ -1,6 +1,7 @@
 package tech.thdev.flickr.view.detail
 
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -52,6 +53,10 @@ class DetailActivity : CoroutineScopeActivity() {
         }
     }
 
+    private val bottomSheetBehavior by lazy(LazyThreadSafetyMode.NONE) {
+        BottomSheetBehavior.from(bottom_sheet)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
@@ -67,6 +72,16 @@ class DetailActivity : CoroutineScopeActivity() {
         }
 
         loadDetailViewModel.loadDetail(intent.getStringExtra(KEY_PHOTO_ID))
+
+        iv_thumbnail_large.setOnClickListener {
+            bottomSheetBehavior.run {
+                if (state != BottomSheetBehavior.STATE_HIDDEN) {
+                    state = BottomSheetBehavior.STATE_HIDDEN
+                } else {
+                    state = BottomSheetBehavior.STATE_COLLAPSED
+                }
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
