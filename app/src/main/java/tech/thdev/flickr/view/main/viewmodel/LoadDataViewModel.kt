@@ -11,10 +11,15 @@ class LoadDataViewModel(private val allImageRepository: AllImageRepository,
                         private val mainAdapterViewModel: MainAdapterViewModel,
                         private val defaultDispatcher: DispatchersProvider = DispatchersProvider) : CoroutineScopeViewModel() {
 
+    private var isLoading = false
+
     fun loadData() {
+        isLoading = true
         launch {
             allImageRepository.loadImage(onError = {
                 // error 처리
+                isLoading = false
+
             }) { item ->
                 d { item.toString() }
                 if (item.photos.photo.isEmpty()) {
@@ -22,14 +27,27 @@ class LoadDataViewModel(private val allImageRepository: AllImageRepository,
                 }
                 launch(defaultDispatcher.main) {
                     mainAdapterViewModel.adapterRepository.run {
-                        item.photos.photo.forEachIndexed { index, flickrPhoto ->
-                            addItem(MainAdapterViewModel.VIEW_TYPE_TOP.takeIf { index == 0 }
+                        item.photos.photo.forEach { flickrPhoto ->
+                            addItem(MainAdapterViewModel.VIEW_TYPE_TOP.takeIf { itemCount == 0 }
                                     ?: MainAdapterViewModel.VIEW_TYPE_SMALL, flickrPhoto)
                         }
                     }
                     mainAdapterViewModel.notifyDataSetChanged()
+                    isLoading = false
                 }
             }
         }
+    }
+
+    fun loadMore(visibleItemCount: Int, totalItemCount: Int, firstVisibleItem: Int) {
+        if (!isLoading && (firstVisibleItem + visibleItemCount) >= totalItemCount - 10) {
+            loadData()
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+
+        allImageRepository.clear()
     }
 }

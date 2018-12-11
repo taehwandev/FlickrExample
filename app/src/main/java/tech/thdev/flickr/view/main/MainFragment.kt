@@ -10,6 +10,7 @@ import tech.thdev.flickr.R
 import tech.thdev.flickr.contract.KEY_PHOTO_ID
 import tech.thdev.flickr.data.source.all.AllImageRepository
 import tech.thdev.flickr.network.FlickrApi
+import tech.thdev.flickr.util.adapterScrollGridLayoutManagerListener
 import tech.thdev.flickr.util.launchActivity
 import tech.thdev.flickr.view.detail.DetailActivity
 import tech.thdev.flickr.view.main.adapter.MainAdapter
@@ -43,6 +44,10 @@ class MainFragment : CoroutineScopeFragment() {
         }
     }
 
+    private val adapterScrollListener by lazy(LazyThreadSafetyMode.NONE) {
+        adapterScrollGridLayoutManagerListener(viewModel::loadMore)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(R.layout.fragment_main, container, false)
 
@@ -52,6 +57,7 @@ class MainFragment : CoroutineScopeFragment() {
         recycler_view.run {
             layoutManager = this@MainFragment.layoutManager
             addItemDecoration(MarginItemDecoration(this@MainFragment.resources.getDimension(R.dimen.main_image_facing_margin).toInt()))
+            addOnScrollListener(adapterScrollListener)
             adapter = this@MainFragment.adapter
         }
 
@@ -66,5 +72,10 @@ class MainFragment : CoroutineScopeFragment() {
                 putExtra(KEY_PHOTO_ID, photoId)
             }
         }
+    }
+
+    override fun onDestroy() {
+        recycler_view?.removeOnScrollListener(adapterScrollListener)
+        super.onDestroy()
     }
 }
