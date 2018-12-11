@@ -5,9 +5,22 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class FlickrPhoto(
+data class DefaultPhotoResponse(
+        @SerializedName("photos") val photos: DefaultPhotos,
+        @SerializedName("stat") val status: String) : Parcelable
+
+@Parcelize
+data class DefaultPhotos(
+        @SerializedName("page") val page: Int = 0,
+        @SerializedName("pages") val pages: Int = 0,
+        @SerializedName("perpage") val perpage: Int = 0,
+        @SerializedName("photo") val photo: List<DefaultPhoto> = mutableListOf(),
+        @SerializedName("total") val total: Int = 0) : Parcelable
+
+@Parcelize
+data class DefaultPhoto(
         @SerializedName("farm") private val farmId: Int,
-        @SerializedName("id") private val userId: String,
+        @SerializedName("id") val photoId: String,
         @SerializedName("isFamily") val isFamily: Int,
         @SerializedName("isfriend") val isFriend: Int,
         @SerializedName("ispublic") val isPublic: Int,
@@ -24,7 +37,7 @@ data class FlickrPhoto(
     val imageUrl: String
         get() {
             if (_imageUrl == null) {
-                _imageUrl = "https://farm$farmId.staticflickr.com/$serverId/${userId}_$secret.jpg"
+                _imageUrl = "https://farm$farmId.staticflickr.com/$serverId/${photoId}_$secret.jpg"
             }
             return _imageUrl!!
         }

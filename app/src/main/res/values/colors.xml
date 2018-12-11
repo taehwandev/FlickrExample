@@ -6,4 +6,8 @@
     <color name="white">#FFF</color>
     <color name="black">#000</color>
     <color name="colorImageTitle">#5c6773</color>
+    <color name="gradientBgColor">#96000000</color>
+    <color name="bottomDetailInfoBG">#96000000</color>
+
+    <color name="colorDetailDescription">#eaeaea</color>
 </resources>

@@ -22,8 +22,9 @@ class LoadDataViewModel(private val allImageRepository: AllImageRepository,
                 }
                 launch(defaultDispatcher.main) {
                     mainAdapterViewModel.adapterRepository.run {
-                        item.photos.photo.forEach {
-                            addItem(MainAdapterViewModel.VIEW_TYPE_SMALL, it)
+                        item.photos.photo.forEachIndexed { index, flickrPhoto ->
+                            addItem(MainAdapterViewModel.VIEW_TYPE_TOP.takeIf { index == 0 }
+                                    ?: MainAdapterViewModel.VIEW_TYPE_SMALL, flickrPhoto)
                         }
                     }
                     mainAdapterViewModel.notifyDataSetChanged()

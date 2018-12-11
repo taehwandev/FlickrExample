@@ -1,18 +1,18 @@
 package tech.thdev.support.base.adapter.holder
 
 import android.content.Context
+import android.databinding.DataBindingUtil
+import android.databinding.ViewDataBinding
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import tech.thdev.support.base.adapter.viewmodel.BaseAdapterViewModel
 
 @Suppress("UNCHECKED_CAST")
-abstract class BaseViewHolder<in ITEM : Any, VIEW_MODEL : BaseAdapterViewModel>(
-    layoutRes: Int,
-    parent: ViewGroup,
-    protected val context: Context = parent.context
-) : AndroidViewHolder(
-    LayoutInflater.from(parent.context).inflate(layoutRes, parent, false)
-) {
+abstract class BaseViewHolder<BINDING : ViewDataBinding, in ITEM : Any, VIEW_MODEL : BaseAdapterViewModel>(
+        layoutRes: Int,
+        parent: ViewGroup,
+        protected val context: Context = parent.context) :
+        BindingViewHolder<BINDING>(DataBindingUtil.bind<BINDING>(LayoutInflater.from(parent.context).inflate(layoutRes, parent, false))!!) {
 
     private lateinit var _viewModel: VIEW_MODEL
 
@@ -20,7 +20,6 @@ abstract class BaseViewHolder<in ITEM : Any, VIEW_MODEL : BaseAdapterViewModel>(
         get() = _viewModel
         set(value) {
             _viewModel = value
-            _viewModel.onInitViewModel()
         }
 
     fun checkItemAndBindViewHolder(item: Any?) {
@@ -30,14 +29,6 @@ abstract class BaseViewHolder<in ITEM : Any, VIEW_MODEL : BaseAdapterViewModel>(
             onBindViewHolder(null)
         }
     }
-
-    /**
-     * How to use.
-     *
-     * viewModel.onClick.... or the others use viewMode
-     */
-    @Deprecated("아마도 지울것 같은가?")
-    abstract fun VIEW_MODEL.onInitViewModel()
 
     /**
      * Use viewHolder

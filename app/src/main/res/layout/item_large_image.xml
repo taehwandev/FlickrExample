@@ -13,9 +13,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/main_image_side_margin"
         android:background="@drawable/image_rect"
-        android:elevation="@dimen/main_image_elevation"
         android:foreground="?selectableItemBackground"
         android:onClick="@{() -> viewModel.onClickItem()}">
 
@@ -26,13 +24,21 @@
             android:scaleType="centerCrop"
             app:imageFromUrl="@{viewModel.imageUrl}"
             app:layout_constraintBottom_toTopOf="@+id/tv_title"
-            app:layout_constraintDimensionRatio="1:0.765"
+            app:layout_constraintDimensionRatio="1:0.48"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintVertical_chainStyle="packed"
             tools:src="@drawable/thumbnail" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:background="@drawable/img_gradient"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_thumbnail"
+            app:layout_constraintEnd_toEndOf="@+id/iv_thumbnail"
+            app:layout_constraintStart_toStartOf="@+id/iv_thumbnail" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -42,13 +48,12 @@
             android:maxLines="1"
             android:padding="@dimen/main_image_title_padding"
             android:text="@{viewModel.title}"
-            android:textColor="@color/colorImageTitle"
+            android:textColor="@color/white"
             android:textSize="@dimen/main_image_title_size"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_thumbnail"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_thumbnail"
+            app:layout_constraintEnd_toEndOf="@+id/iv_thumbnail"
+            app:layout_constraintStart_toStartOf="@+id/iv_thumbnail"
             tools:text="Longlegs in pursuit. # 1 Explore 8 Dec 2018" />
 
     </android.support.constraint.ConstraintLayout>

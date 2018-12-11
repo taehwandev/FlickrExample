@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package tech.thdev.flickr.util
 
 import kotlin.contracts.ExperimentalContracts
@@ -13,3 +15,13 @@ inline fun <T> String?.notNullMessage(block: (message: String) -> T?): T? {
         block(this)
     } else null
 }
+
+inline fun String.addComma(): String =
+        try {
+            this.toInt().addComma()
+        } catch (e: Exception) {
+            this
+        }
+
+inline fun Int.addComma(): String =
+        String.format("%,2d", this)

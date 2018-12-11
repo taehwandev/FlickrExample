@@ -7,7 +7,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import tech.thdev.contract.TEST_FAIL_URL
 import tech.thdev.contract.TEST_URL
-import tech.thdev.flickr.data.FlickrPhotoResponse
+import tech.thdev.flickr.data.DefaultPhotoResponse
 import tech.thdev.support.network.addon.parse
 import tech.thdev.support.network.api.convertParse
 import tech.thdev.support.network.api.enqueue
@@ -75,7 +75,7 @@ class RequestTest {
                     println("success")
 
                     val item = response.message?.let {
-                        FlickrPhotoResponse::class.java.parse(it)
+                        DefaultPhotoResponse::class.java.parse(it)
                     }
                     assert(item?.photos?.photo?.isNotEmpty() == true)
                 }
@@ -108,7 +108,7 @@ class RequestTest {
 
                     println("jsonQuery ${ret.get().message}")
 
-                    val item = response.convertParse(FlickrPhotoResponse::class.java)
+                    val item = response.convertParse(DefaultPhotoResponse::class.java)
                     println("item $item")
                     assert(item?.photos?.photo?.isNotEmpty() == true)
                 }

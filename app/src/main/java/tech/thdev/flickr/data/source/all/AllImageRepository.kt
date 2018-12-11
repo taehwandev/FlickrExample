@@ -1,7 +1,7 @@
 package tech.thdev.flickr.data.source.all
 
 import tech.thdev.flickr.contract.PER_PAGE
-import tech.thdev.flickr.data.FlickrPhotoResponse
+import tech.thdev.flickr.data.DefaultPhotoResponse
 import tech.thdev.flickr.network.FlickrApi
 import tech.thdev.flickr.util.d
 import tech.thdev.support.data.Response
@@ -37,16 +37,15 @@ class AllImageRepository private constructor(private val flickrApi: FlickrApi) {
         nowPage = defaultPage
     }
 
-    suspend fun loadImage(
-            onError: suspend (response: Response) -> Unit,
-            onSuccess: suspend (response: FlickrPhotoResponse) -> Unit): NetworkAPI =
+    suspend fun loadImage(onError: suspend (response: Response) -> Unit,
+                          onSuccess: suspend (response: DefaultPhotoResponse) -> Unit): NetworkAPI =
             flickrApi.loadFlickrDefault(nowPage, PER_PAGE).request().join().also { network ->
                 network.enqueue { result, response ->
                     when (result) {
                         ResponseStatus.Success -> {
                             // 중간에서 페이지 정보를 확인하고, convert 한다.
                             d { response.message ?: "" }
-                            response.convertParse(FlickrPhotoResponse::class.java)?.let {
+                            response.convertParse(DefaultPhotoResponse::class.java)?.let {
                                 it.photos.run {
                                     this@AllImageRepository.nowPage = page
                                     this@AllImageRepository.pages = pages

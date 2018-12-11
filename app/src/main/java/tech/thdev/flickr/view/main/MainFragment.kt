@@ -7,11 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_main.*
 import tech.thdev.flickr.R
+import tech.thdev.flickr.contract.KEY_PHOTO_ID
 import tech.thdev.flickr.data.source.all.AllImageRepository
 import tech.thdev.flickr.network.FlickrApi
+import tech.thdev.flickr.util.launchActivity
+import tech.thdev.flickr.view.detail.DetailActivity
 import tech.thdev.flickr.view.main.adapter.MainAdapter
 import tech.thdev.flickr.view.main.adapter.decoration.MarginItemDecoration
 import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel
+import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel.Companion.VIEW_TYPE_TOP
 import tech.thdev.flickr.view.main.viewmodel.LoadDataViewModel
 import tech.thdev.lifecycle.extensions.viewmodel.injectViewModel
 import tech.thdev.lifecycle.extensions.viewmodel.lazyInjectViewModel
@@ -27,6 +31,18 @@ class MainFragment : CoroutineScopeFragment() {
         LoadDataViewModel(AllImageRepository.getInstance(FlickrApi), adapter.viewModel)
     }
 
+    private val layoutManager: GridLayoutManager by lazy(LazyThreadSafetyMode.NONE) {
+        GridLayoutManager(this@MainFragment.context, 2).apply {
+            spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int =
+                        when (adapter.getItemViewType(position)) {
+                            VIEW_TYPE_TOP -> 2
+                            else -> 1
+                        }
+            }
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(R.layout.fragment_main, container, false)
 
@@ -34,12 +50,21 @@ class MainFragment : CoroutineScopeFragment() {
         super.onActivityCreated(savedInstanceState)
 
         recycler_view.run {
-            layoutManager = GridLayoutManager(this@MainFragment.context, 2)
+            layoutManager = this@MainFragment.layoutManager
             addItemDecoration(MarginItemDecoration(this@MainFragment.resources.getDimension(R.dimen.main_image_facing_margin).toInt()))
             adapter = this@MainFragment.adapter
         }
 
+        adapter.viewModel.init()
+
         viewModel.loadData()
-        // show progress()
+    }
+
+    private fun MainAdapterViewModel.init() {
+        goToDetailPage = { photoId ->
+            requireContext().launchActivity<DetailActivity> {
+                putExtra(KEY_PHOTO_ID, photoId)
+            }
+        }
     }
 }

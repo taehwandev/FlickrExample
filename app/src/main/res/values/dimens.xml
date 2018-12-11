@@ -2,9 +2,17 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="main_image_title_size">12sp</dimen>
+    <dimen name="main_top_image_title_size">14sp</dimen>
     <dimen name="main_image_side_margin">8dp</dimen>
     <dimen name="main_image_facing_margin">4dp</dimen>
     <dimen name="main_image_elevation">2dp</dimen>
     <dimen name="main_image_title_padding">10dp</dimen>
     <dimen name="main_image_radius">4dp</dimen>
+
+    <!-- detail -->
+    <dimen name="detail_title">16sp</dimen>
+    <dimen name="detail_bottom_sheet_min_height">140dp</dimen>
+    <dimen name="detail_bottom_padding">20dp</dimen>
+    <dimen name="detail_count_text_size">12sp</dimen>
+    <dimen name="detail_user_info_text_size">13sp</dimen>
 </resources>
