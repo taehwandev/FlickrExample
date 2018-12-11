@@ -28,7 +28,7 @@ class DetailActivity : CoroutineScopeActivity() {
             setPhotoInfo = { title: String, tvDescription: String, ownerName: String, date: String, viewCount: String, commentCount: String ->
                 if (!isFinishing) {
                     tv_title.setTextAutoVisibility(title)
-                    tv_description.setHtml(tvDescription)
+                    tv_description.setText(tvDescription)
                     tv_owner.text = getString(R.string.msg_owner_name, ownerName)
                     tv_date.text = getString(R.string.msg_post, date)
                     tv_view_count.text = viewCount
@@ -50,6 +50,11 @@ class DetailActivity : CoroutineScopeActivity() {
                     })
                 }
             }
+
+            showErrorMessage = {
+                show(it)
+                finish()
+            }
         }
     }
 
@@ -63,7 +68,7 @@ class DetailActivity : CoroutineScopeActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_close_white_24dp)
+            setHomeAsUpIndicator(R.drawable.ic_close_white)
         }
 
         val photoId = intent.getStringExtra(KEY_PHOTO_ID)
