@@ -12,6 +12,7 @@ import tech.thdev.flickr.contract.KEY_PHOTO_ID
 import tech.thdev.flickr.data.source.detail.DetailImageInfoRepository
 import tech.thdev.flickr.network.FlickrApi
 import tech.thdev.flickr.util.loadUrl
+import tech.thdev.flickr.util.setHtml
 import tech.thdev.flickr.util.setTextAutoVisibility
 import tech.thdev.flickr.util.show
 import tech.thdev.flickr.view.detail.viewmodel.LoadDetailViewModel
@@ -26,7 +27,7 @@ class DetailActivity : CoroutineScopeActivity() {
             setPhotoInfo = { title: String, tvDescription: String, ownerName: String, date: String, viewCount: String, commentCount: String ->
                 if (!isFinishing) {
                     tv_title.setTextAutoVisibility(title)
-                    tv_description.setTextAutoVisibility(tvDescription)
+                    tv_description.setHtml(tvDescription)
                     tv_owner.text = getString(R.string.msg_owner_name, ownerName)
                     tv_date.text = getString(R.string.msg_post, date)
                     tv_view_count.text = viewCount

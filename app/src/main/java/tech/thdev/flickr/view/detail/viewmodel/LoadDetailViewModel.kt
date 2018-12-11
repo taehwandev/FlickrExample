@@ -28,7 +28,7 @@ class LoadDetailViewModel(private val loadDetailRepository: DetailImageInfoRepos
                             photoItem.photo.description.content,
                             photoItem.photo.owner.realName.takeIf { name -> !name.isEmpty() }
                                     ?: photoItem.photo.owner.username,
-                            photoItem.photo.dateUploaded,
+                            photoItem.photo.dates.taken,
                             photoItem.photo.views.addComma(),
                             photoItem.photo.comments.content.addComma())
                 }

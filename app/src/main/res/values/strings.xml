@@ -4,4 +4,5 @@
     <string name="msg_detail_error">Photo id not found</string>
     <string name="msg_owner_name">By: %s</string>
     <string name="msg_post">On: %s</string>
+    <string name="time_format_detail">MMM dd, YYYY</string>
 </resources>
