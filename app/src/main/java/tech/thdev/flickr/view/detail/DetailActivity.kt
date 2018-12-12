@@ -1,5 +1,6 @@
 package tech.thdev.flickr.view.detail
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.view.MenuItem
@@ -27,6 +28,7 @@ class DetailActivity : CoroutineScopeActivity() {
             setPhotoInfo = { title: String, tvDescription: String, ownerName: String, date: String, viewCount: String, commentCount: String ->
                 if (!isFinishing) {
                     tv_title.setTextAutoVisibility(title)
+                    toolbar.title = title
                     tv_description.setText(tvDescription)
                     tv_owner.text = getString(R.string.msg_owner_name, ownerName)
                     tv_date.text = getString(R.string.msg_post, date)
@@ -65,6 +67,9 @@ class DetailActivity : CoroutineScopeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         setSupportActionBar(toolbar)
+
+        toolbar.setTitleTextColor(Color.WHITE)
+
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_close_white)
