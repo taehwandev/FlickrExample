@@ -1,12 +1,13 @@
 ## Flickr example
 
-This example is a sample [flickr image](https://www.flickr.com/services/api/explore/) import using Android [HttpsURLConnection](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection) and [kotlin coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html).
+This sample used Retrofit and Coroutines.
+The Android HttpsURLConnection and Coroutines samples can be found on the [link](https://github.com/taehwandev/FlickrExample/tree/back_https_request_custom).
 
 The used library is as follows.
 
 ## Use library
 
-- [HttpsURLConnection](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection)
+- [Retrofit](https://square.github.io/retrofit/)
 - [Android Architecture Components ViewModel](https://developer.android.com/topic/libraries/architecture/adding-components)
 - [DataBinding](https://developer.android.com/topic/libraries/data-binding/)
 - [LifecycleExtensions](https://thdev.tech/LifecycleExtensions/)
@@ -17,8 +18,8 @@ The used library is as follows.
 
 ## Image
 
-![main](photo/device-2018-12-12-010652.png)
-![detail](photo/device-2018-12-12-010739.png)
+![main](photo/device-2018-12-12-211627.png)
+![detail](photo/device-2018-12-12-211643.png)
 
 ## License
 
