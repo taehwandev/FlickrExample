@@ -3,7 +3,9 @@ package tech.thdev.flickr.data.source.detail
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
+import tech.thdev.flickr.contract.FLICKR_DEFAULT_ADDRESS
 import tech.thdev.flickr.network.FlickrApi
+import tech.thdev.flickr.network.util.createRetrofit
 
 class DetailImageInfoRepositoryTest {
 
@@ -11,7 +13,9 @@ class DetailImageInfoRepositoryTest {
 
     @Before
     fun setUp() {
-        detailImageInfoRepository = DetailImageInfoRepository.getInstance(FlickrApi)
+        detailImageInfoRepository = DetailImageInfoRepository.getInstance(createRetrofit(FlickrApi::class.java, FLICKR_DEFAULT_ADDRESS) {
+            true
+        })
     }
 
     @Test

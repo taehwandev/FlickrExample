@@ -21,7 +21,7 @@ class LoadDataViewModel(private val allImageRepository: AllImageRepository,
         launch {
             allImageRepository.loadImage(onError = {
                 launch(defaultDispatcher.main) {
-                    showErrorMessage("${it.requestCode}-${it.message}")
+                    showErrorMessage(it.message ?: "")
                     isLoading = false
                 }
 

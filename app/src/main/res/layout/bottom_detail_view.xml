@@ -98,7 +98,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_date"
-            app:maxCollapsedLines="20"
+            app:maxCollapsedLines="10"
             tools:text="Early morn Early morn Early morn Early morn Early morn Early morn Early mornEarly mornEarly mornEarly mornEarly mornEarly mornEarly mornEarly morn" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

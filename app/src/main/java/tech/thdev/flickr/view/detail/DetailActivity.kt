@@ -11,9 +11,8 @@ import kotlinx.coroutines.launch
 import tech.thdev.flickr.R
 import tech.thdev.flickr.contract.KEY_PHOTO_ID
 import tech.thdev.flickr.data.source.detail.DetailImageInfoRepository
-import tech.thdev.flickr.network.FlickrApi
+import tech.thdev.flickr.network.RetrofitCreate
 import tech.thdev.flickr.util.loadUrl
-import tech.thdev.flickr.util.setHtml
 import tech.thdev.flickr.util.setTextAutoVisibility
 import tech.thdev.flickr.util.show
 import tech.thdev.flickr.view.detail.viewmodel.LoadDetailViewModel
@@ -24,7 +23,7 @@ import tech.thdev.support.base.coroutines.ui.CoroutineScopeActivity
 class DetailActivity : CoroutineScopeActivity() {
 
     private val loadDetailViewModel: LoadDetailViewModel by lazyInjectViewModel {
-        LoadDetailViewModel(DetailImageInfoRepository.getInstance(FlickrApi)).apply {
+        LoadDetailViewModel(DetailImageInfoRepository.getInstance(RetrofitCreate.flickrApi)).apply {
             setPhotoInfo = { title: String, tvDescription: String, ownerName: String, date: String, viewCount: String, commentCount: String ->
                 if (!isFinishing) {
                     tv_title.setTextAutoVisibility(title)

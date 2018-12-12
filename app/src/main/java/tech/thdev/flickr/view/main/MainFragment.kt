@@ -11,6 +11,7 @@ import tech.thdev.flickr.R
 import tech.thdev.flickr.contract.KEY_PHOTO_ID
 import tech.thdev.flickr.data.source.all.AllImageRepository
 import tech.thdev.flickr.network.FlickrApi
+import tech.thdev.flickr.network.RetrofitCreate
 import tech.thdev.flickr.util.adapterScrollGridLayoutManagerListener
 import tech.thdev.flickr.util.createErrorToast
 import tech.thdev.flickr.util.isOnline
@@ -41,7 +42,7 @@ class MainFragment : CoroutineScopeFragment() {
     }
 
     private val viewModel: LoadDataViewModel by lazyInjectViewModel {
-        LoadDataViewModel(AllImageRepository.getInstance(FlickrApi), adapter.viewModel).apply {
+        LoadDataViewModel(AllImageRepository.getInstance(RetrofitCreate.flickrApi), adapter.viewModel).apply {
             showErrorMessage = this@MainFragment::showErrorView
 
             loadSuccess = {

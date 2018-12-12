@@ -7,7 +7,7 @@ import tech.thdev.flickr.util.isOnline
 
 object RetrofitCreate {
 
-    val githubApi: FlickrApi by lazy {
+    val flickrApi: FlickrApi by lazy {
         createRetrofit(FlickrApi::class.java, FLICKR_DEFAULT_ADDRESS) {
             FlickrApp.context.isOnline()
         }

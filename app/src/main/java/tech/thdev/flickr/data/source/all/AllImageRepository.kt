@@ -1,26 +1,25 @@
 package tech.thdev.flickr.data.source.all
 
+import tech.thdev.flickr.BuildConfig
 import tech.thdev.flickr.contract.PER_PAGE
 import tech.thdev.flickr.data.DefaultPhotoResponse
 import tech.thdev.flickr.network.FlickrApi
-import tech.thdev.flickr.util.d
 import tech.thdev.support.data.Response
 import tech.thdev.support.network.ResponseStatus
-import tech.thdev.support.network.api.convertParse
 import tech.thdev.support.network.api.enqueue
-import tech.thdev.support.network.api.request
 
-class AllImageRepository private constructor(private val flickrApi: FlickrApi) {
+class AllImageRepository private constructor(private val flickrApi: FlickrApi,
+                                             private val apiKey: String) {
 
     companion object {
 
         // For Singleton instantiation
         private var instance: AllImageRepository? = null
 
-        fun getInstance(flickrApi: FlickrApi) =
+        fun getInstance(flickrApi: FlickrApi, apiKey: String = BuildConfig.FLICKR_API_KEY) =
                 instance ?: synchronized(this) {
                     instance
-                            ?: AllImageRepository(flickrApi).also { instance = it }
+                            ?: AllImageRepository(flickrApi, apiKey).also { instance = it }
                 }
     }
 
@@ -43,33 +42,24 @@ class AllImageRepository private constructor(private val flickrApi: FlickrApi) {
             return
         }
 
-        flickrApi.loadFlickrDefault(nowPage, PER_PAGE).await()
-
-
-        flickrApi.loadFlickrDefault(nowPage, PER_PAGE).request().join().also { network ->
-            network.enqueue { result, response ->
-                when (result) {
-                    ResponseStatus.Success -> {
+        flickrApi.loadFlickrDefault(page = nowPage, perPage = PER_PAGE, apiKey = apiKey).enqueue().run {
+            when (this) {
+                is ResponseStatus.Success<*> -> {
+                    (this.item as DefaultPhotoResponse).let { item ->
                         // 중간에서 페이지 정보를 확인하고, convert 한다.
-                        d { response.message ?: "" }
-                        response.convertParse(DefaultPhotoResponse::class.java)?.let {
-                            if (it.status == "ok") {
-                                it.photos.run {
-                                    ++this@AllImageRepository.nowPage
-                                    this@AllImageRepository.pages = pages
-                                }
-
-                                onSuccess(it)
-                            } else {
-                                onError(Response(it.message, requestCode = it.code))
+                        if (item.status == "ok") {
+                            item.photos.run {
+                                ++this@AllImageRepository.nowPage
+                                this@AllImageRepository.pages = pages
                             }
-                        } ?: onError(response)
+                            onSuccess(item)
+                        } else {
+                            onError(Response(item.message))
+                        }
                     }
-                    ResponseStatus.Fail -> {
-                        pages = 1
-                        nowPage = defaultPage
-                        onError(response)
-                    }
+                }
+                is ResponseStatus.Fail -> {
+                    onError(Response(this.exception.message))
                 }
             }
         }

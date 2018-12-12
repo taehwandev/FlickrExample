@@ -1,45 +1,46 @@
 package tech.thdev.flickr.data.source.detail
 
+import tech.thdev.flickr.BuildConfig
 import tech.thdev.flickr.data.PhotoDetail
 import tech.thdev.flickr.network.FlickrApi
 import tech.thdev.support.data.Response
 import tech.thdev.support.network.ResponseStatus
-import tech.thdev.support.network.api.NetworkAPI
-import tech.thdev.support.network.api.convertParse
 import tech.thdev.support.network.api.enqueue
-import tech.thdev.support.network.api.request
 
-class DetailImageInfoRepository private constructor(private val flickrApi: FlickrApi) {
+class DetailImageInfoRepository private constructor(private val flickrApi: FlickrApi,
+                                                    private val apiKey: String) {
 
     companion object {
 
         // For Singleton instantiation
         private var instance: DetailImageInfoRepository? = null
 
-        fun getInstance(flickrApi: FlickrApi) =
+        fun getInstance(flickrApi: FlickrApi, apiKey: String = BuildConfig.FLICKR_API_KEY) =
                 instance ?: synchronized(this) {
                     instance
-                            ?: DetailImageInfoRepository(flickrApi).also { instance = it }
+                            ?: DetailImageInfoRepository(flickrApi, apiKey).also { instance = it }
                 }
     }
 
-    suspend fun loadDetail(photoId: String,
-                           onError: suspend (response: Response) -> Unit,
-                           onSuccess: suspend (response: PhotoDetail) -> Unit): NetworkAPI =
-            flickrApi.loadPhotoDetail(photoId).request().join().also { network ->
-                network.enqueue { result, response ->
-                    when (result) {
-                        ResponseStatus.Success -> {
-                            // 중간에서 페이지 정보를 확인하고, convert 한다.
-                            println(response.message)
-                            response.convertParse(PhotoDetail::class.java)?.let {
-                                onSuccess(it)
-                            } ?: onError(response)
-                        }
-                        ResponseStatus.Fail -> {
-                            onError(response)
+    suspend fun loadDetail(
+            photoId: String,
+            onError: suspend (response: Response) -> Unit,
+            onSuccess: suspend (response: PhotoDetail) -> Unit) {
+        flickrApi.loadPhotoDetail(photoId = photoId, apiKey = apiKey).enqueue().run {
+            when (this) {
+                is ResponseStatus.Success<*> -> {
+                    (this.item as PhotoDetail).let { item ->
+                        if (item.stat == "ok") {
+                            onSuccess(item)
+                        } else {
+                            onError(Response(item.message))
                         }
                     }
                 }
+                is ResponseStatus.Fail -> {
+                    onError(Response(this.exception.message))
+                }
             }
+        }
+    }
 }

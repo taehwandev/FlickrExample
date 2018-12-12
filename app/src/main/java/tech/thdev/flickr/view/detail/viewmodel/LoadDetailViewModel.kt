@@ -16,7 +16,7 @@ class LoadDetailViewModel(private val loadDetailRepository: DetailImageInfoRepos
         launch {
             loadDetailRepository.loadDetail(photoId, onError = {
                 launch(Dispatchers.Main) {
-                    showErrorMessage("${it.requestCode}-${it.message}")
+                    showErrorMessage(it.message ?: "")
                 }
 
             }) { photoItem ->
