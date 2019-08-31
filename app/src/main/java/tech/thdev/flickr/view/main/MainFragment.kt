@@ -1,6 +1,7 @@
 package tech.thdev.flickr.view.main
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,6 @@ import kotlinx.android.synthetic.main.include_toast_error.view.*
 import tech.thdev.flickr.R
 import tech.thdev.flickr.contract.KEY_PHOTO_ID
 import tech.thdev.flickr.data.source.all.AllImageRepository
-import tech.thdev.flickr.network.FlickrApi
 import tech.thdev.flickr.network.RetrofitCreate
 import tech.thdev.flickr.util.adapterScrollGridLayoutManagerListener
 import tech.thdev.flickr.util.createErrorToast
@@ -23,9 +23,8 @@ import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel
 import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel.Companion.VIEW_TYPE_TOP
 import tech.thdev.flickr.view.main.viewmodel.LoadDataViewModel
 import tech.thdev.lifecycle.extensions.viewmodel.lazyInjectViewModel
-import tech.thdev.support.base.coroutines.ui.CoroutineScopeFragment
 
-class MainFragment : CoroutineScopeFragment() {
+class MainFragment : Fragment() {
 
     private val adapterViewModel: MainAdapterViewModel by lazyInjectViewModel {
         MainAdapterViewModel().apply {

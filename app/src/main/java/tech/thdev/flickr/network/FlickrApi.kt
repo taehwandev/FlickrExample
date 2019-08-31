@@ -1,6 +1,6 @@
 package tech.thdev.flickr.network
 
-import kotlinx.coroutines.Deferred
+import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 import tech.thdev.flickr.BuildConfig
@@ -13,11 +13,11 @@ interface FlickrApi {
     @GET("?method=flickr.interestingness.getList&format=json&nojsoncallback=1")
     fun loadFlickrDefault(@Query("page") page: Int,
                           @Query("per_page") perPage: Int,
-                          @Query("api_key") apiKey: String = BuildConfig.FLICKR_API_KEY): Deferred<DefaultPhotoResponse>
+                          @Query("api_key") apiKey: String = BuildConfig.FLICKR_API_KEY): Single<DefaultPhotoResponse>
 
     // https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=06486cf47869200a22d27c4d21d48c09&photo_id=44437878270&format=json&nojsoncallback=1&api_sig=7969880c1464e9854d1b23cf206289f7
     @GET("?method=flickr.photos.getInfo&format=json&nojsoncallback=1")
     fun loadPhotoDetail(@Query("photo_id") photoId: String,
-                        @Query("api_key") apiKey: String = BuildConfig.FLICKR_API_KEY): Deferred<PhotoDetail>
+                        @Query("api_key") apiKey: String = BuildConfig.FLICKR_API_KEY): Single<PhotoDetail>
 }
 

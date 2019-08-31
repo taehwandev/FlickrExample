@@ -2,11 +2,11 @@
 
 package tech.thdev.flickr.network.util
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import tech.thdev.flickr.BuildConfig
 import java.util.concurrent.TimeUnit
@@ -16,7 +16,7 @@ private const val REQUEST_TIME_OUT = 60L
 inline fun <T> createRetrofit(cls: Class<T>, baseUrl: String, noinline isInternetAvailable: () -> Boolean): T =
         Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(createOkHttpClient(isInternetAvailable))
                 .build()

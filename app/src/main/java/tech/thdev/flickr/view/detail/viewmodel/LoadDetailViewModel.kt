@@ -1,40 +1,46 @@
 package tech.thdev.flickr.view.detail.viewmodel
 
-import kotlinx.coroutines.launch
-import tech.thdev.coroutines.provider.DispatchersProvider
-import tech.thdev.coroutines.provider.DispatchersProviderSealed
+import android.arch.lifecycle.ViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.schedulers.Schedulers
 import tech.thdev.flickr.data.source.detail.DetailImageInfoRepository
 import tech.thdev.flickr.util.addComma
-import tech.thdev.support.base.coroutines.viewmodel.CoroutineScopeViewModel
 
-class LoadDetailViewModel(private val loadDetailRepository: DetailImageInfoRepository,
-                          private val dispatcher: DispatchersProviderSealed = DispatchersProvider) : CoroutineScopeViewModel() {
+class LoadDetailViewModel(private val loadDetailRepository: DetailImageInfoRepository) : ViewModel() {
+
+    private val compositeDisposable = CompositeDisposable()
 
     lateinit var showErrorMessage: (message: String) -> Unit
     lateinit var setPhotoInfo: (title: String, tvDescription: String, ownerName: String, date: String, viewCount: String, commentCount: String) -> Unit
-    lateinit var loadPhoto: (url: String, imageUrlLarge: String) -> Unit
+    lateinit var loadPhoto: (imageUrlLarge: String) -> Unit
 
-    fun loadDetail(photoId: String) = launch {
-        loadDetailRepository.loadDetail(photoId, onError = {
-            launch(dispatcher.main) {
-                showErrorMessage(it.message ?: "")
-            }
+    fun loadDetail(photoId: String) {
+        compositeDisposable += loadDetailRepository.loadDetail(photoId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ photoItem ->
+                    photoItem.photo.let { photo ->
+                        loadPhoto(photo.imageUrlLarge)
+                    }
 
-        }) { photoItem ->
-            launch(dispatcher.main) {
-                photoItem.photo.let { photo ->
-                    loadPhoto(photo.imageUrl, photo.imageUrlLarge)
-                }
+                    setPhotoInfo(
+                            photoItem.photo.title.content,
+                            photoItem.photo.description.content,
+                            photoItem.photo.owner.realName.takeIf { name -> !name.isEmpty() }
+                                    ?: photoItem.photo.owner.username,
+                            photoItem.photo.dates.taken,
+                            photoItem.photo.views.addComma(),
+                            photoItem.photo.comments.content.addComma())
+                }, {
+                    showErrorMessage(it.message ?: "")
+                })
+    }
 
-                setPhotoInfo(
-                        photoItem.photo.title.content,
-                        photoItem.photo.description.content,
-                        photoItem.photo.owner.realName.takeIf { name -> !name.isEmpty() }
-                                ?: photoItem.photo.owner.username,
-                        photoItem.photo.dates.taken,
-                        photoItem.photo.views.addComma(),
-                        photoItem.photo.comments.content.addComma())
-            }
-        }
+    override fun onCleared() {
+        super.onCleared()
+
+        compositeDisposable.clear()
     }
 }
