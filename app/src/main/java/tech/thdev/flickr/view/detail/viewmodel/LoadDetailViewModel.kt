@@ -5,6 +5,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
+import tech.thdev.TestEvent
 import tech.thdev.flickr.data.source.detail.DetailImageInfoRepository
 import tech.thdev.flickr.util.addComma
 
@@ -33,8 +34,11 @@ class LoadDetailViewModel(private val loadDetailRepository: DetailImageInfoRepos
                             photoItem.photo.dates.taken,
                             photoItem.photo.views.addComma(),
                             photoItem.photo.comments.content.addComma())
+
+                    TestEvent.sendSuccess()
                 }, {
                     showErrorMessage(it.message ?: "")
+                    TestEvent.sendFail()
                 })
     }
 

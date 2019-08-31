@@ -1,6 +1,9 @@
 package tech.thdev.flickr.view.main.viewmodel
 
+import io.reactivex.android.plugins.RxAndroidPlugins
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subscribers.TestSubscriber
+import org.junit.Before
 import org.junit.Test
 import tech.thdev.flickr.contract.FLICKR_DEFAULT_ADDRESS
 import tech.thdev.flickr.data.source.all.AllImageRepository
@@ -22,6 +25,11 @@ class LoadDataViewModelTest {
      *
      * 사전 준비) LoadDataViewModel의 테스트 가능하도록 코드가 작성되어있다.
      */
+
+    @Before
+    fun setUp() {
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
+    }
 
     @Test
     fun loadTest() {
