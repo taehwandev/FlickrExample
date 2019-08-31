@@ -22,7 +22,7 @@ class UITest {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
     }
 
-    fun 화면에_보여줘(sleepTime: Long = 500L, body: () -> Unit) {
+    fun 화면에_보여(sleepTime: Long = 500L, body: () -> Unit) {
         Thread.sleep(sleepTime)
 
         body()
@@ -30,7 +30,7 @@ class UITest {
 
     fun 선택(message: String, sleepTime: Long = 500L, body: () -> Unit) {
         if (device.findObject(UiSelector().textStartsWith(message)).click()) {
-            화면에_보여줘(sleepTime, body)
+            화면에_보여(sleepTime, body)
         } else {
             throw Exception("Click fail $message")
         }
@@ -44,7 +44,7 @@ class UITest {
 
     @Test
     fun test() {
-        화면에_보여줘 {
+        화면에_보여 {
             선택("Labor") {
                 잘나와("Labor of Love")
             }

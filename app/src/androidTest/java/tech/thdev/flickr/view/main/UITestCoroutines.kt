@@ -25,12 +25,6 @@ class UITestCoroutines {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
     }
 
-//    fun 화면에_보여줘(sleepTime: Long = 500L, body: () -> Unit) {
-//        Thread.sleep(sleepTime)
-//
-//        body()
-//    }
-
     suspend fun 화면에보여(body: suspend () -> Unit) {
         if (TestEvent.channel.receive()) {
             body()
