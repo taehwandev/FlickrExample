@@ -6,7 +6,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import tech.thdev.flickr.data.source.all.AllImageRepository
-import tech.thdev.flickr.util.d
 import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel
 
 class LoadDataViewModel(private val allImageRepository: AllImageRepository,
@@ -25,7 +24,6 @@ class LoadDataViewModel(private val allImageRepository: AllImageRepository,
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ item ->
-                    d { item.toString() }
                     if (item.photos.photo.isEmpty()) {
                         return@subscribe
                     }

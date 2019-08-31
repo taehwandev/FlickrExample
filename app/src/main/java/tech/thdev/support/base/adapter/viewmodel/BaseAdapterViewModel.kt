@@ -8,8 +8,11 @@ abstract class BaseAdapterViewModel : ViewModel() {
     private lateinit var _adapterRepository: AdapterRepository
 
     var adapterRepository: AdapterRepository
-        get() = _adapterRepository.takeIf { ::_adapterRepository.isInitialized } ?: let {
-            AdapterRepository().also { repository -> _adapterRepository = repository }
+        get() {
+            if (::_adapterRepository.isInitialized.not()) {
+                AdapterRepository().also { repository -> _adapterRepository = repository }
+            }
+            return _adapterRepository
         }
         set(value) {
             _adapterRepository = value
