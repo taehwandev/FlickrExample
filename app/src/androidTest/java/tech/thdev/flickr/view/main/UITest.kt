@@ -9,6 +9,8 @@ import org.junit.Rule
 import org.junit.Test
 import java.lang.Exception
 
+const val FIND_KEYWORD = "Target specific."
+
 class UITest {
 
     @Rule
@@ -45,8 +47,8 @@ class UITest {
     @Test
     fun test() {
         화면에_보여 {
-            선택("Labor") {
-                잘나와("Labor of Love")
+            선택(FIND_KEYWORD, 1000) {
+                잘나와(FIND_KEYWORD)
             }
         }
     }

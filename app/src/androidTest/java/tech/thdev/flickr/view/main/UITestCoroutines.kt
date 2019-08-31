@@ -50,8 +50,8 @@ class UITestCoroutines {
     @Test
     fun test() = runBlocking {
         화면에보여 {
-            선택("Labor") {
-                잘나와("Labor of Love")
+            선택(FIND_KEYWORD) {
+                잘나와(FIND_KEYWORD)
             }
         }
     }
