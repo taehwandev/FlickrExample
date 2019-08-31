@@ -3,6 +3,7 @@ package tech.thdev.flickr.view.detail.viewmodel
 import kotlinx.coroutines.launch
 import tech.thdev.coroutines.provider.DispatchersProvider
 import tech.thdev.coroutines.provider.DispatchersProviderSealed
+import tech.thdev.flickr.TestEvent
 import tech.thdev.flickr.data.source.detail.DetailImageInfoRepository
 import tech.thdev.flickr.util.addComma
 import tech.thdev.support.base.coroutines.viewmodel.CoroutineScopeViewModel
@@ -18,6 +19,7 @@ class LoadDetailViewModel(private val loadDetailRepository: DetailImageInfoRepos
         loadDetailRepository.loadDetail(photoId, onError = {
             launch(dispatcher.main) {
                 showErrorMessage(it.message ?: "")
+                TestEvent.loadFail()
             }
 
         }) { photoItem ->
@@ -34,6 +36,8 @@ class LoadDetailViewModel(private val loadDetailRepository: DetailImageInfoRepos
                         photoItem.photo.dates.taken,
                         photoItem.photo.views.addComma(),
                         photoItem.photo.comments.content.addComma())
+
+                TestEvent.loadSuccess()
             }
         }
     }

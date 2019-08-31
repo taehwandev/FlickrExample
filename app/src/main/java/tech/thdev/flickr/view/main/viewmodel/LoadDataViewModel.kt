@@ -2,6 +2,7 @@ package tech.thdev.flickr.view.main.viewmodel
 
 import kotlinx.coroutines.launch
 import tech.thdev.coroutines.provider.DispatchersProvider
+import tech.thdev.flickr.TestEvent
 import tech.thdev.flickr.data.source.all.AllImageRepository
 import tech.thdev.flickr.util.d
 import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel
@@ -22,6 +23,7 @@ class LoadDataViewModel(private val allImageRepository: AllImageRepository,
             allImageRepository.loadImage(onError = {
                 launch(defaultDispatcher.main) {
                     showErrorMessage(it.message ?: "")
+                    TestEvent.loadFail()
                     isLoading = false
                 }
 
@@ -39,6 +41,7 @@ class LoadDataViewModel(private val allImageRepository: AllImageRepository,
                     }
                     mainAdapterViewModel.notifyDataSetChanged()
                     loadSuccess()
+                    TestEvent.loadSuccess()
                     isLoading = false
                 }
             }
