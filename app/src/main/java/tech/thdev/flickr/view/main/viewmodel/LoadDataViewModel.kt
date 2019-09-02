@@ -2,14 +2,17 @@ package tech.thdev.flickr.view.main.viewmodel
 
 import kotlinx.coroutines.launch
 import tech.thdev.coroutines.provider.DispatchersProvider
+import tech.thdev.flickr.TestEvent
 import tech.thdev.flickr.data.source.all.AllImageRepository
 import tech.thdev.flickr.util.d
 import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel
 import tech.thdev.support.base.coroutines.viewmodel.CoroutineScopeViewModel
 
-class LoadDataViewModel(private val allImageRepository: AllImageRepository,
-                        private val mainAdapterViewModel: MainAdapterViewModel,
-                        private val defaultDispatcher: DispatchersProvider = DispatchersProvider) : CoroutineScopeViewModel() {
+class LoadDataViewModel(
+    private val allImageRepository: AllImageRepository,
+    private val mainAdapterViewModel: MainAdapterViewModel,
+    private val defaultDispatcher: DispatchersProvider = DispatchersProvider
+) : CoroutineScopeViewModel() {
 
     lateinit var showErrorMessage: (message: String) -> Unit
     lateinit var loadSuccess: () -> Unit
@@ -22,6 +25,7 @@ class LoadDataViewModel(private val allImageRepository: AllImageRepository,
             allImageRepository.loadImage(onError = {
                 launch(defaultDispatcher.main) {
                     showErrorMessage(it.message ?: "")
+                    TestEvent.loadFail()
                     isLoading = false
                 }
 
@@ -34,11 +38,12 @@ class LoadDataViewModel(private val allImageRepository: AllImageRepository,
                     mainAdapterViewModel.adapterRepository.run {
                         item.photos.photo.forEach { flickrPhoto ->
                             addItem(MainAdapterViewModel.VIEW_TYPE_TOP.takeIf { itemCount == 0 }
-                                    ?: MainAdapterViewModel.VIEW_TYPE_SMALL, flickrPhoto)
+                                ?: MainAdapterViewModel.VIEW_TYPE_SMALL, flickrPhoto)
                         }
                     }
                     mainAdapterViewModel.notifyDataSetChanged()
                     loadSuccess()
+                    TestEvent.loadSuccess()
                     isLoading = false
                 }
             }
