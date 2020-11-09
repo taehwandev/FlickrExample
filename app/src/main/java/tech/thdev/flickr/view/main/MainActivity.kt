@@ -1,9 +1,9 @@
 package tech.thdev.flickr.view.main
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import tech.thdev.flickr.R
 import tech.thdev.flickr.util.loadFragment

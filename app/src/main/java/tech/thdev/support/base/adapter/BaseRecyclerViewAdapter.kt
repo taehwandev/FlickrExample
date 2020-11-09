@@ -1,7 +1,7 @@
 package tech.thdev.support.base.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import tech.thdev.support.base.adapter.data.source.AdapterRepository
 import tech.thdev.support.base.adapter.holder.BaseViewHolder
 import tech.thdev.support.base.adapter.viewmodel.BaseAdapterViewModel

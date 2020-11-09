@@ -1,10 +1,14 @@
 package tech.thdev.flickr.view.main
 
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.include_toast_error.view.*
 import tech.thdev.flickr.R
@@ -22,17 +26,19 @@ import tech.thdev.flickr.view.main.adapter.decoration.MarginItemDecoration
 import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel
 import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel.Companion.VIEW_TYPE_TOP
 import tech.thdev.flickr.view.main.viewmodel.LoadDataViewModel
-import tech.thdev.lifecycle.extensions.viewmodel.lazyInjectViewModel
-import tech.thdev.support.base.coroutines.ui.CoroutineScopeFragment
 
-class MainFragment : CoroutineScopeFragment() {
+class MainFragment : Fragment() {
 
-    private val adapterViewModel: MainAdapterViewModel by lazyInjectViewModel {
-        MainAdapterViewModel().apply {
-            goToDetailPage = { photoId ->
-                requireContext().launchActivity<DetailActivity> {
-                    putExtra(KEY_PHOTO_ID, photoId)
-                }
+    private val adapterViewModel by viewModels<MainAdapterViewModel> {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return MainAdapterViewModel().apply {
+                    goToDetailPage = { photoId ->
+                        requireContext().launchActivity<DetailActivity> {
+                            putExtra(KEY_PHOTO_ID, photoId)
+                        }
+                    }
+                } as T
             }
         }
     }
@@ -41,14 +47,18 @@ class MainFragment : CoroutineScopeFragment() {
         MainAdapter(adapterViewModel)
     }
 
-    private val viewModel: LoadDataViewModel by lazyInjectViewModel {
-        LoadDataViewModel(AllImageRepository.getInstance(RetrofitCreate.flickrApi), adapter.viewModel).apply {
-            showErrorMessage = this@MainFragment::showErrorView
+    private val viewModel by viewModels<LoadDataViewModel> {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return LoadDataViewModel(AllImageRepository.getInstance(RetrofitCreate.flickrApi), adapter.viewModel).apply {
+                    showErrorMessage = this@MainFragment::showErrorView
 
-            loadSuccess = {
-                if (group_progress.visibility == View.VISIBLE) {
-                    group_progress.visibility = View.GONE
-                }
+                    loadSuccess = {
+                        if (group_progress.visibility == View.VISIBLE) {
+                            group_progress.visibility = View.GONE
+                        }
+                    }
+                } as T
             }
         }
     }

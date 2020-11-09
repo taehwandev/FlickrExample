@@ -1,6 +1,6 @@
 package tech.thdev.support.base.adapter.data.source
 
-import android.support.annotation.MainThread
+import androidx.annotation.MainThread
 import tech.thdev.support.base.adapter.data.AdapterItem
 
 class AdapterRepository {

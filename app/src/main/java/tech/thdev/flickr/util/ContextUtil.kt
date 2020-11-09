@@ -1,14 +1,12 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package tech.thdev.flickr.util
 
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.support.annotation.IdRes
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 
 inline fun AppCompatActivity.loadFragment(@IdRes idRes: Int, fragment: Fragment) {
     supportFragmentManager.beginTransaction().run {
@@ -21,12 +19,12 @@ inline fun <reified T : Any> Context.launchActivity(noinline body: Intent.() -> 
 }
 
 inline fun Context.show(message: String) =
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
 inline fun Context.show(messageId: Int) =
-        show(getText(messageId).toString())
+    show(getText(messageId).toString())
 
 inline fun Context.isOnline(): Boolean =
-        (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).run {
-            activeNetworkInfo?.isConnected ?: false
-        }
+    (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).run {
+        activeNetworkInfo?.isConnected ?: false
+    }

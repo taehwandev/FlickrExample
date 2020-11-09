@@ -1,6 +1,6 @@
 package tech.thdev.flickr.view.main.adapter.holder.viewmodel
 
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import tech.thdev.flickr.data.DefaultPhoto
 import tech.thdev.flickr.view.main.adapter.viewmodel.MainAdapterViewModel
 

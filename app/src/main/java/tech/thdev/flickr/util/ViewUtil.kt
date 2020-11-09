@@ -4,13 +4,13 @@ package tech.thdev.flickr.util
 
 import android.content.Context
 import android.os.Build
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 inline fun TextView.setHtml(message: String?) {
     text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

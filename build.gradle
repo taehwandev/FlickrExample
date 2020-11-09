@@ -2,21 +2,101 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.3.50'
-        coroutines_version = '1.3.0'
+        buildToolsVersionInfo = "30.0.2"
+        compileSdkVersionInfo = 30
+        targetSdkVersionInfo = 30
+        minSdkVerisonInfo = 26
 
-        supportVersion = '28.0.0'
+        kotlin_version = '1.4.10'
+        coroutines_version = '1.4.1'
 
-        lifecycleVersion = '1.1.1'
+        appcompatVersion = '1.2.0'
 
-        thCoroutinesExtensionsVersion = '1.3.1'
-        thLifecycleExtesionVersion = '1.6.1'
+        materialVersion = '1.2.1'
+        constraintLayoutVersion = '2.0.4'
 
-        glideVersion = '4.8.0'
-        lottieVersion = '2.7.0'
+        coreKtxVersion = '1.3.2'
+        fragmentKtxVersion = '1.2.5'
+        livedataKtxVersion = '2.2.0'
+        viewModelKtxVersion = '2.2.0'
 
-        retrofitVersion='2.5.0'
-        okhttpVersion = '3.12.0'
+        glideVersion = '4.11.0'
+        lottieVersion = '3.4.4'
+
+        retrofitVersion='2.9.0'
+        okhttpVersion = '4.8.0'
+
+        // test
+        junitVersion = '4.13'
+        // https://mvnrepository.com/artifact/org.mockito/mockito-core
+        // https://developer.android.com/training/testing/unit-testing/local-unit-tests
+        mockitoCoreVersion = '3.3.3'
+        // https://github.com/awaitility/awaitility
+        awaitilityVersion = '4.0.2'
+
+        // ui test
+        // https://developer.android.com/training/testing/
+        // https://developer.android.com/training/testing/set-up-project
+        // // AndroidJUnitRunner and JUnit Rules
+        androidxJunitVersion = '1.1.0'
+        androidxJunitRunnerVersion = '1.2.0'
+        espressoVersion = '3.2.0'
+        // uiautomator
+        uiautomatorVersion = '2.2.0'
+
+
+        // Kotlin
+        kotlin = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+        appCompat = "androidx.appcompat:appcompat:$appcompatVersion"
+
+        // ui
+        material = "com.google.android.material:material:$materialVersion"
+        constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+
+        // ktx
+        coreKtx = "androidx.core:core-ktx:$coreKtxVersion"
+        fragmentKtx = "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
+
+        // lifecycle
+        lifecycleLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$livedataKtxVersion"
+        lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelKtxVersion"
+
+        // ImageLoad library
+        // https://github.com/bumptech/glide
+        glide = "com.github.bumptech.glide:glide:$glideVersion"
+        glideCompiler = "com.github.bumptech.glide:compiler:$glideVersion"
+
+        // Retrofit API
+        retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
+        retrofitGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+
+        // OK HTTP
+        okhttp = "com.squareup.okhttp3:okhttp:$okhttpVersion"
+        oktthLogging = "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+
+        lottie = "com.airbnb.android:lottie:$lottieVersion"
+
+        // Test
+        junit = "junit:junit:$junitVersion"
+        mockito = "org.mockito:mockito-core:$mockitoCoreVersion"
+        awaitility = "org.awaitility:awaitility:$awaitilityVersion"
+
+        // UI Test
+        // Assertions
+        uiTestJunit = "androidx.test.ext:junit:$androidxJunitVersion"
+        // AndroidJUnitRunner and JUnit Rules
+        testRunner = "androidx.test:runner:$androidxJunitRunnerVersion"
+        testRules = "androidx.test:rules:$androidxJunitRunnerVersion"
+        // Espresso dependencies
+        espressoCore = "androidx.test.espresso:espresso-core:$espressoVersion"
+        espressoIntents = "androidx.test.espresso:espresso-intents:$espressoVersion"
+        // uiautomator
+        uiautomator = "androidx.test.uiautomator:uiautomator:$uiautomatorVersion"
+
+
+        flickrApiKey = "\"3f072c442a389ba9f2bc470d37fdef96\""
     }
 
     repositories {
@@ -24,7 +104,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:4.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -41,11 +121,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-// FlickrAPI key는 local.properties에 "flickrApiKey="생성한 키""를 등록하면 됩니다
-ext {
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    flickrApiKey = properties.getProperty('flickrApiKey', "\"\"")
 }
