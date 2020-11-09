@@ -1,5 +1,6 @@
 package tech.thdev.support.base.adapter.holder
 
-import android.databinding.ViewDataBinding
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.RecyclerView
 
-abstract class BindingViewHolder<T : ViewDataBinding>(protected val binding: T) : AndroidViewHolder(binding.root)
+abstract class BindingViewHolder<T : ViewDataBinding>(protected val binding: T) : RecyclerView.ViewHolder(binding.root)

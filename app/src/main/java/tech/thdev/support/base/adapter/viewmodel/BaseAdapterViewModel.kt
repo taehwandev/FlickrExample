@@ -1,9 +1,9 @@
 package tech.thdev.support.base.adapter.viewmodel
 
+import androidx.lifecycle.ViewModel
 import tech.thdev.support.base.adapter.data.source.AdapterRepository
-import tech.thdev.support.base.coroutines.viewmodel.CoroutineScopeViewModel
 
-abstract class BaseAdapterViewModel : CoroutineScopeViewModel() {
+abstract class BaseAdapterViewModel : ViewModel() {
 
     private lateinit var _adapterRepository: AdapterRepository
 

@@ -2,9 +2,15 @@ package tech.thdev.flickr.view.detail
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.BottomSheetBehavior
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.bottom_detail_view.*
 import kotlinx.coroutines.Dispatchers
@@ -17,44 +23,46 @@ import tech.thdev.flickr.util.loadUrl
 import tech.thdev.flickr.util.setTextAutoVisibility
 import tech.thdev.flickr.util.show
 import tech.thdev.flickr.view.detail.viewmodel.LoadDetailViewModel
-import tech.thdev.lifecycle.extensions.viewmodel.lazyInjectViewModel
-import tech.thdev.support.base.coroutines.ui.CoroutineScopeActivity
 
 
-class DetailActivity : CoroutineScopeActivity() {
+class DetailActivity : AppCompatActivity() {
 
-    private val loadDetailViewModel: LoadDetailViewModel by lazyInjectViewModel {
-        LoadDetailViewModel(DetailImageInfoRepository.getInstance(RetrofitCreate.flickrApi)).apply {
-            setPhotoInfo = { title: String, tvDescription: String, ownerName: String, date: String, viewCount: String, commentCount: String ->
-                if (!isFinishing) {
-                    tv_title.setTextAutoVisibility(title)
-                    toolbar.title = title
-                    tv_description.setText(tvDescription)
-                    tv_owner.text = getString(R.string.msg_owner_name, ownerName)
-                    tv_date.text = getString(R.string.msg_post, date)
-                    tv_view_count.text = viewCount
-                    tv_comment_count.text = commentCount
-                }
-            }
+    private val loadDetailViewModel by viewModels<LoadDetailViewModel> {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return LoadDetailViewModel(DetailImageInfoRepository.getInstance(RetrofitCreate.flickrApi)).apply {
+                    setPhotoInfo = { title: String, tvDescription: String, ownerName: String, date: String, viewCount: String, commentCount: String ->
+                        if (!isFinishing) {
+                            tv_title.setTextAutoVisibility(title)
+                            toolbar.title = title
+                            tv_description.setText(tvDescription)
+                            tv_owner.text = getString(R.string.msg_owner_name, ownerName)
+                            tv_date.text = getString(R.string.msg_post, date)
+                            tv_view_count.text = viewCount
+                            tv_comment_count.text = commentCount
+                        }
+                    }
 
-            loadPhoto = { url, urlLarge ->
-                if (!isFinishing) {
-                    iv_thumbnail.loadUrl(url, R.drawable.placeholder_image, onResourceReady = {
-                        // 고화질의 이미지를 한 번 더 부른다
-                        launch(Dispatchers.Main) {
-                            iv_thumbnail_large.loadUrl(urlLarge, onResourceReady = {
-                                iv_thumbnail.visibility = View.GONE
+                    loadPhoto = { url, urlLarge ->
+                        if (!isFinishing) {
+                            iv_thumbnail.loadUrl(url, R.drawable.placeholder_image, onResourceReady = {
+                                // 고화질의 이미지를 한 번 더 부른다
+                                Handler(Looper.getMainLooper()).post {
+                                    iv_thumbnail_large.loadUrl(urlLarge, onResourceReady = {
+                                        iv_thumbnail.visibility = View.GONE
+                                        false
+                                    })
+                                }
                                 false
                             })
                         }
-                        false
-                    })
-                }
-            }
+                    }
 
-            showErrorMessage = {
-                show(it)
-                finish()
+                    showErrorMessage = {
+                        show(it)
+                        finish()
+                    }
+                } as T
             }
         }
     }
@@ -80,7 +88,7 @@ class DetailActivity : CoroutineScopeActivity() {
             show(R.string.msg_detail_error)
         }
 
-        loadDetailViewModel.loadDetail(intent.getStringExtra(KEY_PHOTO_ID))
+        loadDetailViewModel.loadDetail(intent.getStringExtra(KEY_PHOTO_ID) ?: "")
 
         iv_thumbnail_large.setOnClickListener {
             bottomSheetBehavior.run {
@@ -93,8 +101,8 @@ class DetailActivity : CoroutineScopeActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 return true

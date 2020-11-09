@@ -1,16 +1,14 @@
 package tech.thdev.flickr.view.main
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.rule.ActivityTestRule
-import android.support.test.uiautomator.UiDevice
-import android.support.test.uiautomator.UiScrollable
-import android.support.test.uiautomator.UiSelector
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.ActivityTestRule
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiSelector
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import tech.thdev.flickr.TestEvent
-import java.lang.Exception
 
 class UITestCoroutines {
 

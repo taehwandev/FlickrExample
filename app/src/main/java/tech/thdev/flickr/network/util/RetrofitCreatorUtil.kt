@@ -2,7 +2,6 @@
 
 package tech.thdev.flickr.network.util
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -16,7 +15,6 @@ private const val REQUEST_TIME_OUT = 60L
 inline fun <T> createRetrofit(cls: Class<T>, baseUrl: String, noinline isInternetAvailable: () -> Boolean): T =
         Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(createOkHttpClient(isInternetAvailable))
                 .build()
@@ -24,9 +22,11 @@ inline fun <T> createRetrofit(cls: Class<T>, baseUrl: String, noinline isInterne
 
 fun createOkHttpClient(isInternetAvailable: () -> Boolean): OkHttpClient =
         OkHttpClient.Builder().apply {
-            addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
-                // println log tag name is "API"
-                println(it)
+            addInterceptor(HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    // println log tag name is "API"
+                    println(message)
+                }
             }).setLevel(if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE))
             connectTimeout(REQUEST_TIME_OUT, TimeUnit.SECONDS)
             readTimeout(REQUEST_TIME_OUT, TimeUnit.SECONDS)

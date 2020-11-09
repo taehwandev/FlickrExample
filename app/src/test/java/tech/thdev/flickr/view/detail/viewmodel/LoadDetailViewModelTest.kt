@@ -5,7 +5,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
-import tech.thdev.coroutines.provider.TestDispatchersProvider
 import tech.thdev.flickr.contract.FLICKR_DEFAULT_ADDRESS
 import tech.thdev.flickr.data.source.detail.DetailImageInfoRepository
 import tech.thdev.flickr.network.FlickrApi
@@ -20,9 +19,15 @@ class LoadDetailViewModelTest {
      */
     @Test
     fun testLoadDetail() = runBlocking {
-        viewModel = LoadDetailViewModel(DetailImageInfoRepository.getInstance(createRetrofit(FlickrApi::class.java, FLICKR_DEFAULT_ADDRESS) {
-            true
-        }), TestDispatchersProvider)
+        viewModel = LoadDetailViewModel(
+            DetailImageInfoRepository.getInstance(
+                createRetrofit(
+                    FlickrApi::class.java,
+                    FLICKR_DEFAULT_ADDRESS
+                ) {
+                    true
+                })
+        )
 
         viewModel.run {
             var isEnd = false
@@ -56,9 +61,16 @@ class LoadDetailViewModelTest {
      */
     @Test
     fun testLoadDetailFailApiKey() = runBlocking {
-        viewModel = LoadDetailViewModel(DetailImageInfoRepository.getInstance(createRetrofit(FlickrApi::class.java, FLICKR_DEFAULT_ADDRESS) {
-            true
-        }, "apikey error"), TestDispatchersProvider)
+        viewModel = LoadDetailViewModel(
+            DetailImageInfoRepository.getInstance(
+                createRetrofit(
+                    FlickrApi::class.java,
+                    FLICKR_DEFAULT_ADDRESS
+                ) {
+                    true
+                }, "apikey error"
+            )
+        )
 
         viewModel.run {
             var isEnd = false
@@ -87,9 +99,15 @@ class LoadDetailViewModelTest {
      */
     @Test
     fun testLoadDetailFailNotFoundId() = runBlocking {
-        viewModel = LoadDetailViewModel(DetailImageInfoRepository.getInstance(createRetrofit(FlickrApi::class.java, FLICKR_DEFAULT_ADDRESS) {
-            true
-        }), TestDispatchersProvider)
+        viewModel = LoadDetailViewModel(
+            DetailImageInfoRepository.getInstance(
+                createRetrofit(
+                    FlickrApi::class.java,
+                    FLICKR_DEFAULT_ADDRESS
+                ) {
+                    true
+                })
+        )
 
         viewModel.run {
             var isEnd = false

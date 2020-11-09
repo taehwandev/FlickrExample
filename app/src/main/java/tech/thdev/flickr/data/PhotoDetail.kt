@@ -31,8 +31,7 @@ data class Photo(
         @SerializedName("views") val views: String,
         @SerializedName("visibility") val visibility: Visibility,
         private var _imageUrl: String? = null) {
-
-
+        
     /**
      * https://www.flickr.com/services/api/misc.urls.html
      * Image url 조합

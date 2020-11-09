@@ -7,10 +7,10 @@ import retrofit2.HttpException
 import tech.thdev.support.network.ResponseStatus
 
 suspend fun <T : Any> Deferred<T>.enqueue(): ResponseStatus<*> =
-        try {
-            ResponseStatus.Success(this.await())
-        } catch (e: HttpException) {
-            ResponseStatus.Fail(e)
-        } catch (e: Throwable) {
-            ResponseStatus.Fail(e)
-        }
+    try {
+        ResponseStatus.Success(this.await())
+    } catch (e: HttpException) {
+        ResponseStatus.Fail(e)
+    } catch (e: Throwable) {
+        ResponseStatus.Fail(e)
+    }

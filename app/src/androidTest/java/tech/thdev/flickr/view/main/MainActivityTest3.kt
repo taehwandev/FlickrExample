@@ -1,17 +1,21 @@
 package tech.thdev.flickr.view.main
 
 
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.Espresso.pressBack
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import android.support.test.espresso.matcher.ViewMatchers.*
-import android.support.test.filters.LargeTest
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
-import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.pressBack
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withClassName
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.ActivityTestRule
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.`is`
@@ -21,8 +25,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import tech.thdev.flickr.R
-import android.support.test.InstrumentationRegistry
-
 
 
 @LargeTest
@@ -39,75 +41,111 @@ class MainActivityTest3 {
     fun mainActivityTest3() {
         instrumentation.waitForIdleSync()
         val recyclerView = onView(
-                allOf(withId(R.id.recycler_view),
-                        childAtPosition(
-                                withClassName(`is`("android.support.constraint.ConstraintLayout")),
-                                0)))
-        recyclerView.perform(actionOnItemAtPosition<ViewHolder>(36, click()))
+            allOf(
+                withId(R.id.recycler_view),
+                childAtPosition(
+                    withClassName(`is`("android.support.constraint.ConstraintLayout")),
+                    0
+                )
+            )
+        )
+        recyclerView.perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(36, click()))
 
         val appCompatImageView = onView(
-                allOf(withId(R.id.iv_thumbnail_large),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()))
+            allOf(
+                withId(R.id.iv_thumbnail_large),
+                childAtPosition(
+                    childAtPosition(
+                        withId(android.R.id.content),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
         appCompatImageView.perform(click())
 
         val appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
+            allOf(
+                withContentDescription("Navigate up"),
+                childAtPosition(
+                    allOf(
+                        withId(R.id.toolbar),
                         childAtPosition(
-                                allOf(withId(R.id.toolbar),
-                                        childAtPosition(
-                                                withClassName(`is`("android.support.design.widget.CoordinatorLayout")),
-                                                2)),
-                                1),
-                        isDisplayed()))
+                            withClassName(`is`("android.support.design.widget.CoordinatorLayout")),
+                            2
+                        )
+                    ),
+                    1
+                ),
+                isDisplayed()
+            )
+        )
         appCompatImageButton.perform(click())
 
         val recyclerView2 = onView(
-                allOf(withId(R.id.recycler_view),
-                        childAtPosition(
-                                withClassName(`is`("android.support.constraint.ConstraintLayout")),
-                                0)))
-        recyclerView2.perform(actionOnItemAtPosition<ViewHolder>(1, click()))
+            allOf(
+                withId(R.id.recycler_view),
+                childAtPosition(
+                    withClassName(`is`("android.support.constraint.ConstraintLayout")),
+                    0
+                )
+            )
+        )
+        recyclerView2.perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
 
         val appCompatImageView2 = onView(
-                allOf(withId(R.id.iv_thumbnail_large),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()))
+            allOf(
+                withId(R.id.iv_thumbnail_large),
+                childAtPosition(
+                    childAtPosition(
+                        withId(android.R.id.content),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
         appCompatImageView2.perform(click())
 
         val appCompatImageView3 = onView(
-                allOf(withId(R.id.iv_thumbnail_large),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()))
+            allOf(
+                withId(R.id.iv_thumbnail_large),
+                childAtPosition(
+                    childAtPosition(
+                        withId(android.R.id.content),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
         appCompatImageView3.perform(click())
 
         val appCompatImageView4 = onView(
-                allOf(withId(R.id.iv_thumbnail_large),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()))
+            allOf(
+                withId(R.id.iv_thumbnail_large),
+                childAtPosition(
+                    childAtPosition(
+                        withId(android.R.id.content),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
         appCompatImageView4.perform(click())
 
         pressBack()
     }
 
     private fun childAtPosition(
-            parentMatcher: Matcher<View>, position: Int): Matcher<View> {
+        parentMatcher: Matcher<View>, position: Int
+    ): Matcher<View> {
 
         return object : TypeSafeMatcher<View>() {
             override fun describeTo(description: Description) {
