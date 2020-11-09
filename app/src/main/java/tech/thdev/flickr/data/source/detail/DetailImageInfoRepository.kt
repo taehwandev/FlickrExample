@@ -17,8 +17,7 @@ class DetailImageInfoRepository private constructor(
 
         fun getInstance(flickrApi: FlickrApi, apiKey: String = BuildConfig.FLICKR_API_KEY) =
             instance ?: synchronized(this) {
-                instance
-                    ?: DetailImageInfoRepository(flickrApi, apiKey).also { instance = it }
+                instance ?: DetailImageInfoRepository(flickrApi, apiKey).also { instance = it }
             }
     }
 

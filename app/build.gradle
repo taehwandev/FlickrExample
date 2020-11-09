@@ -92,4 +92,6 @@ dependencies {
     androidTestImplementation rootProject.ext.testRunner
     androidTestImplementation rootProject.ext.testRules
     androidTestImplementation rootProject.ext.espressoCore
+    androidTestImplementation rootProject.ext.espressoContrib
+    androidTestImplementation rootProject.ext.uiautomator
 }
