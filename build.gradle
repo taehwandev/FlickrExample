@@ -91,6 +91,7 @@ buildscript {
         testRules = "androidx.test:rules:$androidxJunitRunnerVersion"
         // Espresso dependencies
         espressoCore = "androidx.test.espresso:espresso-core:$espressoVersion"
+        espressoContrib = "androidx.test.espresso:espresso-contrib:$espressoVersion"
         espressoIntents = "androidx.test.espresso:espresso-intents:$espressoVersion"
         // uiautomator
         uiautomator = "androidx.test.uiautomator:uiautomator:$uiautomatorVersion"

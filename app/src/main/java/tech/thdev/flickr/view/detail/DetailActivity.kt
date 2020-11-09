@@ -2,6 +2,8 @@ package tech.thdev.flickr.view.detail
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
@@ -32,7 +34,7 @@ class DetailActivity : AppCompatActivity() {
                     setPhotoInfo = { title: String, tvDescription: String, ownerName: String, date: String, viewCount: String, commentCount: String ->
                         if (!isFinishing) {
                             tv_title.setTextAutoVisibility(title)
-//                            toolbar.title = title
+                            toolbar.title = title
                             tv_description.setText(tvDescription)
                             tv_owner.text = getString(R.string.msg_owner_name, ownerName)
                             tv_date.text = getString(R.string.msg_post, date)
@@ -45,12 +47,12 @@ class DetailActivity : AppCompatActivity() {
                         if (!isFinishing) {
                             iv_thumbnail.loadUrl(url, R.drawable.placeholder_image, onResourceReady = {
                                 // 고화질의 이미지를 한 번 더 부른다
-//                                launch(Dispatchers.Main) {
-//                                    iv_thumbnail_large.loadUrl(urlLarge, onResourceReady = {
-//                                        iv_thumbnail.visibility = View.GONE
-//                                        false
-//                                    })
-//                                }
+                                Handler(Looper.getMainLooper()).post {
+                                    iv_thumbnail_large.loadUrl(urlLarge, onResourceReady = {
+                                        iv_thumbnail.visibility = View.GONE
+                                        false
+                                    })
+                                }
                                 false
                             })
                         }
