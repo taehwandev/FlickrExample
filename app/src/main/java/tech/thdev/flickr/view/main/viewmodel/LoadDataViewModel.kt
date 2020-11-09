@@ -18,6 +18,10 @@ class LoadDataViewModel(
 
     private var isLoading = false
 
+    /**
+     * 4편 샘플 코드 - Scope Function 사용 시 알아두면 좋은 것
+     * 중첩 사용 시 주의할 부분을 알아 볼 수 있는 예, 3개의 중첩을 this와 parameter로 접근하고있다.
+     */
     fun loadData() {
         isLoading = true
         viewModelScope.launch {

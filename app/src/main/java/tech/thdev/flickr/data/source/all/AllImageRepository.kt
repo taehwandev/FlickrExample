@@ -8,6 +8,7 @@ import tech.thdev.support.data.Response
 
 /**
  * 2편 샘플 코드 - Property와 function 정의에서 알아두면 좋은 것
+ * 4편 샘플 코드 - Scope Function 사용 시 알아두면 좋은 것
  */
 class AllImageRepository private constructor(
     private val flickrApi: FlickrApi,
@@ -77,12 +78,19 @@ class AllImageRepository private constructor(
             return
         }
 
+        /**
+         * 4편 샘플 코드 - Scope Function 사용 시 알아두면 좋은 것
+         * 중첩 사용 시 주의할 부분을 알아 볼 수 있는 예, 2개의 중첩 this를 사용하고 있다.
+         */
         flickrApi.loadFlickrDefault(page = nowPage, perPage = PER_PAGE, apiKey = apiKey).run {
+            // run의 this
+
             // 중간에서 페이지 정보를 확인하고, convert 한다.
             try {
                 // 다음의 코드를 Property를 이용해 수정해보자.
                 if (status == "ok") {
                     photos.run {
+                        // run의 this
                         ++this@AllImageRepository.nowPage
                         this@AllImageRepository.pages = pages
                     }
