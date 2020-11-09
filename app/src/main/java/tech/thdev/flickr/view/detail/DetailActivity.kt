@@ -1,6 +1,8 @@
 package tech.thdev.flickr.view.detail
 
+import android.content.Context
 import android.graphics.Color
+import android.hardware.biometrics.BiometricManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,8 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.bottom_detail_view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import tech.thdev.flickr.R
 import tech.thdev.flickr.contract.KEY_PHOTO_ID
 import tech.thdev.flickr.data.source.detail.DetailImageInfoRepository
@@ -25,7 +25,14 @@ import tech.thdev.flickr.util.show
 import tech.thdev.flickr.view.detail.viewmodel.LoadDetailViewModel
 
 
+/**
+ * 3편 샘플 코드 - Type casting 사용 시 주의할 점
+ */
 class DetailActivity : AppCompatActivity() {
+
+    private val biometricManager by lazy {
+        getSystemService(Context.BIOMETRIC_SERVICE) as BiometricManager?
+    }
 
     private val loadDetailViewModel by viewModels<LoadDetailViewModel> {
         object : ViewModelProvider.Factory {
