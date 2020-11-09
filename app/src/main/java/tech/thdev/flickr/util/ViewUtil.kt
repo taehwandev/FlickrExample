@@ -33,6 +33,9 @@ inline fun View.show(body: () -> Boolean) {
 /**
  * GridLayoutManager 에 대한 리스너 callback을 제공한다.
  */
+/**
+ * 3편 샘플 코드 - Type casting 사용 시 주의할 점
+ */
 inline fun adapterScrollGridLayoutManagerListener(
         crossinline onCallback: (visibleItemCount: Int, totalItemCount: Int, firstVisibleItem: Int) -> Unit) = object : RecyclerView.OnScrollListener() {
 
@@ -41,6 +44,7 @@ inline fun adapterScrollGridLayoutManagerListener(
 
         val visibleItemCount = recyclerView.childCount
         val totalItemCount = recyclerView.adapter?.itemCount ?: 0
+        // as 샘플
         val firstVisibleItem = (recyclerView.layoutManager as GridLayoutManager).findFirstVisibleItemPosition()
 
         onCallback(visibleItemCount, totalItemCount, firstVisibleItem)
