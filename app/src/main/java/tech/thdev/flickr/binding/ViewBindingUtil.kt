@@ -1,7 +1,7 @@
 package tech.thdev.flickr.binding
 
-import android.databinding.BindingAdapter
 import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import tech.thdev.flickr.R
 import tech.thdev.flickr.util.loadUrl
 

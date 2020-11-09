@@ -3,12 +3,12 @@ package tech.thdev.flickr.view.custom
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.support.constraint.ConstraintLayout
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.view.View.OnClickListener
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.view_expand_text.view.*
 import tech.thdev.flickr.R
 import tech.thdev.flickr.util.setHtml

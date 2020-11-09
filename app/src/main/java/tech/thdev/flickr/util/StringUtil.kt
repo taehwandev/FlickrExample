@@ -6,7 +6,7 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-@UseExperimental(ExperimentalContracts::class)
+@OptIn(ExperimentalContracts::class)
 inline fun <T> String?.notNullMessage(block: (message: String) -> T?): T? {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)

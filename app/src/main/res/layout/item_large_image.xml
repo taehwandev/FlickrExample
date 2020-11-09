@@ -10,7 +10,7 @@
             type="tech.thdev.flickr.view.main.adapter.holder.viewmodel.ImageViewHolderViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/image_rect"
@@ -56,5 +56,5 @@
             app:layout_constraintStart_toStartOf="@+id/iv_thumbnail"
             tools:text="Longlegs in pursuit. # 1 Explore 8 Dec 2018" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

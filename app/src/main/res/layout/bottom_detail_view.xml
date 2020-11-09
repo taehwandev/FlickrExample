@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_sheet"
@@ -7,9 +7,9 @@
     android:layout_height="wrap_content"
     android:background="@color/bottomDetailInfoBG"
     app:behavior_hideable="true"
-    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/detail_bottom_padding">
@@ -32,6 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
             tools:text="By: davy renney" />
 
@@ -42,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:textStyle="italic"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_owner"
             tools:text="On: Dec 18, 2018" />
 
@@ -100,5 +102,5 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_date"
             app:maxCollapsedLines="10"
             tools:text="Early morn Early morn Early morn Early morn Early morn Early morn Early mornEarly mornEarly mornEarly mornEarly mornEarly mornEarly mornEarly morn" />
-    </android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
